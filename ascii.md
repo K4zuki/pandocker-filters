@@ -1,3 +1,13 @@
 # Ascii text
 
-`anotherbored.md`{.include}
+`moreascii.md`{.include}
+
+```include
+path: moreascii.md
+---
+```
+
+```include
+path: moreascii.md
+---
+```

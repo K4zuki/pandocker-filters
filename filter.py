@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 Pandoc filter using panflute
@@ -35,7 +36,8 @@ def make_emph(elem, doc):
             raw = f.read()
 
             new_elems = pf.convert_text(raw)
-            pf.debug(new_elems)
+            i = (item.walk(make_emph, doc) for item in new_elems)
+            pf.debug(i)
             d = pf.Doc(*new_elems, format='md')
             pf.debug(d.content)
         return new_elems

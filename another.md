@@ -2,6 +2,10 @@
 
 ---
 
+```include
+path: yet_another.md
+---
+```
 `./yet_another.md`{.include}
 
 [^17]: ぴよ
