@@ -8,7 +8,7 @@ import io
 import csv
 import panflute as pf
 import codecs
-import pypandoc
+# import pypandoc
 
 
 def prepare(doc):
@@ -19,28 +19,30 @@ def action(elem, doc):
     pf.debug("action()")
     if isinstance(elem, pf.Para):
 
-        pf.debug(elem)
+        # pf.debug(elem)
         e = elem.walk(make_emph)
-        pf.debug("")
-        pf.debug(e)
+        # pf.debug(e)
+        pf.debug(e.content)
 
-        return e
-    pf.debug("")
+        # return e.content
+    # pf.debug("")
 
 
 def make_emph(elem, doc):
-    pf.debug("\tmake_emph()")
     if isinstance(elem, pf.Code) and 'include' in elem.classes:
+        pf.debug("\tmake_emph()")
         fn = elem.text
         with codecs.open(fn, 'r', 'utf-8') as f:
             raw = f.read()
 
             new_elems = pf.convert_text(raw)
-            i = (item.walk(make_emph, doc) for item in new_elems)
-            pf.debug(i)
+            # i = (item.walk(make_emph, doc) for item in new_elems)
+            # pf.debug(i)
             d = pf.Doc(*new_elems, format='md')
-            pf.debug(d.content)
-        return new_elems
+            e = d.walk(make_emph)
+            pf.debug(e.content)
+            return e.content
+        # return new_elems
     pf.debug("")
     # return pf.Emph(elem)
     # data = pypandoc.convert_file(fn, 'json')

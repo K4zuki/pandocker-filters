@@ -1,13 +1,15 @@
-# とあるテキスト[^16]
+# とあるテキスト(source.md)[^16]
 
 `hoge`{.python}
 
 ---
 
-`./another.md`{.include}
-
 ```include
 path: ./another.md
+---
+```
+```include
+path: yet_another.md
 ---
 ```
 

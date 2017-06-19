@@ -1,4 +1,4 @@
-# 他のテキスト[^17]
+# 他のテキスト(another.md)[^17]
 
 ---
 
@@ -6,6 +6,5 @@
 path: yet_another.md
 ---
 ```
-`./yet_another.md`{.include}
 
 [^17]: ぴよ
