@@ -2,9 +2,6 @@
 
 ---
 
-```include
-path: yet_another.md
----
-```
+<#include "yet_another.md">
 
 [^17]: ぴよ

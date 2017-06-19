@@ -4,13 +4,7 @@
 
 ---
 
-```include
-path: ./another.md
----
-```
-```include
-path: yet_another.md
----
-```
+<#include "another.md">
+<#include "yet_another.md">
 
 [^16]: ほげ
