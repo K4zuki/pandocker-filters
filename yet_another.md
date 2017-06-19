@@ -1,4 +1,4 @@
-# さらなるテキスト(yet_another.md)[^16]
+## さらなるテキスト(yet_another.md)[^16]
 
 foo
 

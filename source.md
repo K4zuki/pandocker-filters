@@ -1,4 +1,4 @@
-# とあるテキスト(source.md)[^16]
+## とあるテキスト(source.md)[^16]
 
 `hoge`{.python}
 
