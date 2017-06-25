@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 modifying https://github.com/sergiocorreia/panflute-filters/filters/figure.py
@@ -88,7 +88,10 @@ def figure(options, data, element, doc):
     fn = rotate(fn, angle)
     title = pf.convert_text(title)
     caption = pf.convert_text(caption)
-    attr = OrderedDict(attr)
+
+    if not attr:
+        attr = OrderedDict({})
+
     # assert len(title) == 1, title
 
     title = title[0]
