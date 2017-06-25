@@ -5,16 +5,17 @@ include: [.,include]
 ## とあるテキスト(source.md)[^16]
 
 ```rotate
-source: images/front-image.png
+source: /home/yamamoto/.pandoc/pandoc_misc/images/front-image.png
 angle: 0
 # caption: "*Awsome* image title"
-width: 80%
-height: 50%
+attr:
+  width: 20%
+  height: 50%
 ---
 ```
 
 ***
-![ **caption** ]( images/front-image.png ){width=50% }
+![ **caption** ]( /home/yamamoto/.pandoc/pandoc_misc/images/front-image.png ){width=50% }
 
 <!-- ![ caption ]( ../images/front-image.png ){width=30% } -->
 
