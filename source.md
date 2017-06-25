@@ -1,8 +1,28 @@
+---
+include: [.,include]
+---
+
 ## とあるテキスト(source.md)[^16]
 
-`hoge`{.python}
-
+```rotate
+source: images/front-image.png
+angle: 0
+# caption: "*Awsome* image title"
+width: 80%
+height: 50%
 ---
+```
+
+***
+![ **caption** ]( images/front-image.png ){width=50% }
+
+<!-- ![ caption ]( ../images/front-image.png ){width=30% } -->
+
+***
+
+`import hoge`{.python}
+
+***
 
 <#include "another.md">
 <#include "yet_another.md">
