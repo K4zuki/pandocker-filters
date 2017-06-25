@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
 """
 modifying https://github.com/sergiocorreia/panflute-filters/filters/figure.py
 to rotate given image by desired angle
@@ -14,6 +14,7 @@ from string import Template
 
 import panflute as pf
 from PIL import Image
+from collections import OrderedDict
 
 # ---------------------------
 # Functions
@@ -59,18 +60,36 @@ def rotate(filename="", angle=0):
 
 def figure(options, data, element, doc):
 
+    # pf.debug(doc.get_metadata('include', 'no hoge'))
+    # pf.debug(element.attributes)
+    # pf.debug(element.parent)
+    # pf.debug(element.prev)
+    # pf.debug(element)
+    # pf.debug(element.next)
+    # Para(
+    #     Image(
+    #         Strong(Str(caption));
+    #         url='../images/front-image.png',
+    #         title='fig:',
+    #         attributes=OrderedDict([('width', '50%')])
+    #     )
+    # )
+
     # Get options
     fn = os.path.abspath(options['source']).replace('\\', '/')
-    title = options.get('title', '')
-    caption = options.get('caption', '')
+    title = options.get('title', 'fig:')
+    caption = options.get('caption', 'Untitled')
     label = options.get('label', os.path.splitext(os.path.basename(fn))[0])
-    notes = data
     angle = options.get('angle', 0)
+    attr = options.get('attr', {})
+
+    # pf.debug(attr)
 
     fn = rotate(fn, angle)
     title = pf.convert_text(title)
     caption = pf.convert_text(caption)
-    assert len(title) == 1, title
+    attr = OrderedDict(attr)
+    # assert len(title) == 1, title
 
     title = title[0]
     title_text = pf.stringify(title).strip()
@@ -78,12 +97,9 @@ def figure(options, data, element, doc):
     caption = caption[0]
     caption = caption.content
 
-    # pf.debug(title)
-
-    # notes = pf.Div(*pf.convert_text(notes), classes=['note'])
-    img = pf.Image(*caption, url=fn, title=title_text, identifier=label, attributes={})
-    # ans = pf.Div(pf.Plain(img), pf.Plain(pf.LineBreak), notes, classes=['figure'])
+    img = pf.Image(*caption, url=fn, title=title_text, identifier=label, attributes=attr)
     ans = pf.Para(img)
+    # pf.debug(ans)
     return ans
 
 
