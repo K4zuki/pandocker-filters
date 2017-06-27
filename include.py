@@ -6,8 +6,11 @@ http://scorreia.com/software/panflute/guide.html#yaml-code-blocks
 
 block shape looks like this:
 
-```{.include}
-path: <relative path to file to include>
+```listingtable
+source: <relative path to file to include>
+class: source file type
+tex: True if rendering in tex mode; exclusive with docx
+docx: True if rendering in docx mode; exclusive with tex
 ---
 ```
 
@@ -17,51 +20,91 @@ import io
 import csv
 import panflute as pf
 import codecs
+import os
+
+"""
+    _type = type
+
+    _label = _basename.lower().replace(".", "_")
+    _label = _label.replace("/", "_")
+    anchor = "" if not isDocx else 'TC "[@lst:%s] %s" `\l` 6\n\n' % (_label, _basename)
+
+    _file_title = _basename if not isTex else _basename.replace("_", "\\\\\\_")
+
+    _list = ["Listing: %s %s" % (_file_title, anchor),
+             "```{#lst:%s %s}" % (_label, _type),
+             "```"]
+
++--------------------------------------------------------------------------------+
+|Listing: table.csv                                                              |
+|```{#lst:table_csv .csv}                                                        |
+|```                                                                             |
++--------------------------------------------------------------------------------+
+
+```{.csv .numberLines numbers="left"}
+this,is,a table,"multi\
+line\
+title"
+to,show,an,example
+of,table,markdown,"importer\
+of\
+multiline"
+```
+"""
 
 
 def fenced_action(options, data, element, doc):
-    # We'll only run this for CodeBlock elements of class 'include'
-    # pf.debug("\nfenced_action() at %d" % (element.index))
-    # pf.debug(element.parent.content.list)
-    # element.parent.content.list.pop(element.index)
-    # pf.debug(element.parent.content.list)
-    # element.index = element.parent.content.list.index(element)
-    fn = options.get('path')
-    with codecs.open(fn, 'r', 'utf-8') as f:
-        pf.debug("\tcodecs.open()")
-        raw = f.read()
+    # We'll only run this for CodeBlock elements of class 'listingtable'
+    fn = options.get('source')
+    basename = os.path.basename(fn)
+    isTex = options.get('tex', False)
+    isDocx = options.get('isDocx', False)
+    file_type = options.get('class', 'plain')
+    types = [file_type, 'numberLines']
+    # pf.debug(file_type, types)
+    for doctype in [isTex, isDocx]:
+        if not isinstance(doctype, bool):
+            if isinstance(doctype, str):
+                doctype = doctype.upper()
+                if doctype in ['TRUE', 'YES']:
+                    doctype = True
+                else:
+                    doctype = False
+            else:
+                doctype = False
+
+    if isTex and isDocx:
+        pass
+    else:
+        with codecs.open(fn, 'r', 'utf-8') as f:
+            # pf.debug("codecs.open()")
+            raw = f.read()
         # pf.debug(raw)
 
-        new_elems = pf.convert_text(raw)
-        # pf.debug(new_elems)
-    d = pf.Doc(*new_elems, format='md')
-    pf.debug(d.content.list)
+        label = basename.lower().replace(".", "_").replace("/", "_")
+        anchor = "" if not isDocx else 'TC "[@lst:%s] %s" `\l` 6\n\n' % (label, basename)
+        file_title = basename if not isTex else basename.replace("_", "\\\\\\_")
+        # pf.debug(label, anchor, file_title)
 
-    if element.parent.content:
-        element.parent.content.list.pop(element.index)
-        # e = pf.run_filter(pf.yaml_filter, tag='include', function=fenced_action, doc=d)
-        # pf.debug(e.content)
+        header_caption = pf.Str("Listing: %s %s" % (file_title, anchor))
+        header_block = pf.CodeBlock("", identifier="#lst:%s" % (label), classes=["listing %s" % (file_type)])
+        pf.debug(header_caption)
 
-        pf.debug(d.content.list)
-        for _d in reversed(d.content.list):
-            e = pf.yaml_filter(_d, doc=d, tag='include', function=fenced_action)
-            element.parent.content.list.insert(_d, element.index)
-            # pf.debug(_d)
+        # header = pf.Para(*header_block)
+        read = pf.CodeBlock(raw, classes=types, attributes={"numbers": "left"})
 
-        # return e.content
+        cell = pf.TableCell(pf.Para(header_caption), header_block)
+        row = [pf.TableRow(cell)]
+        # pf.debug(row)
+        table = pf.Table(*row)
+
+        return pf.Div(table, read)
 
 
 def main(doc=None):
-    return pf.run_filter(pf.yaml_filter, tag='include', function=fenced_action,
+    return pf.run_filter(pf.yaml_filter, tag='listingtable', function=fenced_action,
                          doc=doc)
 
 
 if __name__ == '__main__':
     main()
-
-'''
-source.md
-    |- another.md
-    |   `- yet_another.md
-    `- yet_another.md
-'''

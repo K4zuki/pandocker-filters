@@ -13,7 +13,14 @@ attr:
   height: 50%
 ---
 ```
+***
+```listingtable
+source: panflute/filter.py
+class: python
+tex: True
+---
 
+```
 ***
 ![ **caption** ]( images/front-image.png ){width=50% }
 
