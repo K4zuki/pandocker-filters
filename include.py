@@ -50,11 +50,28 @@ of,table,markdown,"importer\
 of\
 multiline"
 ```
+
+Table(TableRow(
+TableCell(Para(Str(Listing: ) Space Str(table.csv))
+CodeBlock(
+identifier='lst:table_csv', classes=['csv'])))
+alignment=['AlignDefault'], width=[1], rows=1, cols=1)
 """
 
 
 def fenced_action(options, data, element, doc):
     # We'll only run this for CodeBlock elements of class 'listingtable'
+
+    # pf.debug(doc.get_metadata('include', 'no hoge'))
+    # pf.debug(element.parent)
+    # pf.debug(element.index)
+    # pf.debug(element.parent.content)
+
+    # pf.debug(element.parent)
+    # pf.debug(element.prev)
+    # pf.debug(element)
+    # pf.debug(element.next)
+
     fn = options.get('source')
     basename = os.path.basename(fn)
     isTex = options.get('tex', False)
@@ -86,19 +103,25 @@ def fenced_action(options, data, element, doc):
         file_title = basename if not isTex else basename.replace("_", "\\\\\\_")
         # pf.debug(label, anchor, file_title)
 
-        header_caption = pf.Str("Listing: %s %s" % (file_title, anchor))
-        header_block = pf.CodeBlock("", identifier="#lst:%s" % (label), classes=["listing %s" % (file_type)])
-        pf.debug(header_caption)
+        # header_caption = pf.Str("Listing: %s %s" % (file_title, anchor))
+        header_block = pf.CodeBlock("", identifier="lst:%s" % (label), classes=["%s" % (file_type)])
+        header_caption = [pf.Str("Listing:"), pf.Space(), pf.Str("%s" % (file_title))]
+        # pf.debug(header_caption)
 
         # header = pf.Para(*header_block)
         read = pf.CodeBlock(raw, classes=types, attributes={"numbers": "left"})
 
-        cell = pf.TableCell(pf.Para(header_caption), header_block)
+        cell = pf.TableCell(pf.Para(*header_caption), header_block)
+        # pf.debug(cell)
         row = [pf.TableRow(cell)]
         # pf.debug(row)
-        table = pf.Table(*row)
+        table = pf.Table(*row, alignment=['AlignDefault'], width=[1])
+        # element.container.insert(element.index + 1, read)
+        # element.container.insert(element.index + 1, table)
+        # element.container.pop(element.index)
 
-        return pf.Div(table, read)
+        # return []
+        return [table, read]
 
 
 def main(doc=None):
