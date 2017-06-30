@@ -116,11 +116,8 @@ def fenced_action(options, data, element, doc):
         row = [pf.TableRow(cell)]
         # pf.debug(row)
         table = pf.Table(*row, alignment=['AlignDefault'], width=[1])
-        # element.container.insert(element.index + 1, read)
-        # element.container.insert(element.index + 1, table)
-        # element.container.pop(element.index)
 
-        # return []
+        pf.debug("listingtable of ", fn)
         return [table, read]
 
 

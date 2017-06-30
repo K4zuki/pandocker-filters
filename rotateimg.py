@@ -54,7 +54,6 @@ def rotate(filename="", angle=0):
         if not os.path.exists(filename):
             tmp.save(filename)
 
-        # pf.debug("rotate()", angle, filename)
     return filename
 
 
@@ -76,7 +75,9 @@ def figure(options, data, element, doc):
     # )
 
     # Get options
-    fn = os.path.abspath(options['source']).replace('\\', '/')
+    fn = options.get('source')
+    pf.debug("rotate image of ", fn)
+    fn = os.path.abspath(fn).replace('\\', '/')
     title = options.get('title', 'fig:')
     caption = options.get('caption', 'Untitled')
     label = options.get('label', os.path.splitext(os.path.basename(fn))[0])
