@@ -32,36 +32,37 @@ def finalize(doc):
 class RotateImage(object):
 
     def __init__(self):
-        pass
+        self.processed_images = []
+        self.angles = [90, 180, 270]
+        self.angle_str = {90: "+090", 180: "_180", 270: "-090"}
 
-    def rotate(filename="", angle=0):
+    def rotate(self, filename="", angle=0):
 
         with Image.open(filename) as img:
             path, ext = os.path.splitext(filename)
+            rotater = {90: img.transpose(Image.ROTATE_90),
+                       180: img.transpose(Image.ROTATE_180),
+                       270: img.transpose(Image.ROTATE_270),
+                       }
+            angle = angle % 360
             if(angle == 0):
                 pass
-            elif(angle == 90):
-                tmp = img.transpose(Image.ROTATE_90)
-                filename = "%s_r+090%s" % (path, ext)
-            elif(angle == 180 or angle == -180):
-                tmp = img.transpose(Image.ROTATE_180)
-                filename = "%s_r180%s" % (path, ext)
-            elif(angle == 270 or angle == -90):
-                tmp = img.transpose(Image.ROTATE_270)
-                filename = "%s_r-090%s" % (path, ext)
             else:
-                angle = angle % 360
                 if(angle < 0):
                     angle = 360 - abs(angle)
-                # print angle
-                tmp = img.rotate(angle, expand=True)
-                filename = "%s_r%+03d%s" % (path, angle, ext)
-            if not os.path.exists(filename):
-                tmp.save(filename)
+                if angle in self.angles:
+                    filename = "%s_r%s%s" % (path, self.angle_str[angle], ext)
+                    tmp = rotater[angle]
+                else:
+                    # print angle
+                    filename = "%s_r%+03d%s" % (path, angle, ext)
+                    tmp = img.rotate(angle, expand=True)
+                if not os.path.exists(filename):
+                    tmp.save(filename)
 
         return filename
 
-    def figure(options, data, element, doc):
+    def figure(self, options, data, element, doc):
 
         # pf.debug(doc.get_metadata('include', 'no hoge'))
         # pf.debug(element.attributes)
@@ -90,7 +91,7 @@ class RotateImage(object):
 
         # pf.debug(attr)
 
-        fn = rotate(fn, angle)
+        fn = self.rotate(fn, angle)
         title = pf.convert_text(title)
         caption = pf.convert_text(caption)
 
