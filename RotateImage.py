@@ -81,7 +81,7 @@ class RotateImage(object):
 
         # Get options
         fn = options.get('source')
-        pf.debug("rotate image of ", fn)
+        pf.debug("rotate image of", fn)
         fn = os.path.abspath(fn).replace('\\', '/')
         title = options.get('title', 'fig:')
         caption = options.get('caption', 'Untitled')
