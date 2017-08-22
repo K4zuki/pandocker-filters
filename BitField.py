@@ -15,19 +15,21 @@ applies MIT License (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
 
 import os
 import panflute as pf
+import subprocess
 
 
 class BitField(object):
 
     def __init__(self):
-        self.bitfield = "'" + str(pf.shell("which bitfield").decode('utf-8').strip()) + "'"
+        self.bitfield = pf.shell("which bitfield").decode('utf-8').strip()
+        # self.bitfield = "./bitfield/bin/bitfield.js"
         self.counter = 0
         self.unix = True if (os.name) != "nt" else False
         self.svg2pdf = None
         self.svg2png = None
         self.svg2eps = None
         if self.unix:
-            self.svg2pdf = pf.shell("which rsvg-convert")
+            self.svg2pdf = pf.shell("which rsvg-convert").decode('utf-8').strip()
             self.svg2png = self.svg2pdf
             self.svg2eps = self.svg2eps
         else:
@@ -49,16 +51,16 @@ class BitField(object):
         caption = options.get('caption')
         dir_to = options.get('directory', self.defaultdir_to)
         toPNG = options.get('png', True)
-        toEPS = options.get('eps', True) if self.unix else False
+        toEPS = options.get('eps', False) if self.unix else False
         toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
 
         # options.get('pdf', False)
         # toPDF = options.get('pdf', False)
         assert source is not None, "mandatory option 'input' is not set"
         assert os.path.exists("./" + source) == 1, "input file does not exist"
-        assert toPNG in [True, False], "option png is boolean"
-        assert toPDF in [True, False], "option pdf is boolean"
-        assert toEPS in [True, False], "option eps is boolean"
+        assert isinstance(toPNG, bool), "option png is boolean"
+        assert isinstance(toPDF, bool), "option pdf is boolean"
+        assert isinstance(toEPS, bool), "option eps is boolean"
 
         # pf.debug(isinstance(toPNG, bool))
         pf.debug(toPDF)
@@ -88,19 +90,20 @@ class BitField(object):
         # $(RSVG) $<.svg --format=png --output=$@
         # $(RSVG) $<.svg --output $@
 
-        toSVG = " ".join([self.bitfield,
-                          "--input", source,
-                          "--vspace", vspace,
-                          "--hspace", hspace,
-                          "--lanes", lanes,
-                          "--bits", bits,
-                          "--fontfamily", fontfamily,
-                          "--fontsize", fontsize,
-                          "--fontweight", fontweight,
-                          ">", _svg
-                          ])
-        pf.debug(toSVG)
-        pf.shell(toSVG)
+        toSVG = [self.bitfield,
+                 "--input", source,
+                 "--vspace", vspace,
+                 "--hspace", hspace,
+                 "--lanes", lanes,
+                 "--bits", bits,
+                 "--fontfamily", fontfamily,
+                 "--fontsize", fontsize,
+                 "--fontweight", fontweight,
+                 ">", _svg
+                 ]
+        pf.debug(" ".join(toSVG))
+        pf.shell(" ".join(toSVG))
+        # subprocess.call(toSVG)
 
         if(toPDF):
             output = [self.svg2pdf, _svg]
@@ -108,19 +111,19 @@ class BitField(object):
                 output.append("--format=pdf")
             output.append("--output")
             output.append(".".join([_basename, "pdf"]))
-            _svg2pdf = " ".join(output)
-        else:
-            _svg2pdf = "echo"
+            pf.debug(" ".join(output))
+            pf.shell(" ".join(output))
+            subprocess.call(output)
 
         if(toPNG):
             output = [self.svg2png, _svg]
             if self.unix:
                 output.append("--format=png")
             output.append("--output")
-            output.append(".".join([_basename, "png"]))
-            _svg2png = " ".join(output)
-        else:
-            _svg2png = "echo"
+            output.append(".".join([str(_basename), "png"]))
+            pf.debug(" ".join(output))
+            pf.shell(" ".join(output))
+            # subprocess.call(output)
 
         if(toEPS):
             output = [self.svg2pdf,
@@ -129,14 +132,14 @@ class BitField(object):
                       "--output",
                       ".".join([_basename, "eps"])
                       ]
-            _svg2eps = " ".join(output)
-        else:
-            _svg2eps = "echo"
+            pf.debug(" ".join(output))
+            pf.shell(" ".join(output))
+            # subprocess.call(output)
 
-        [pf.debug(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
-        [pf.shell(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
+        # [pf.debug(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
+        # [pf.shell(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
         self.counter += 1
-        return
+        return None
 
 
 def main(doc=None):

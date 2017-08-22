@@ -123,7 +123,7 @@ class ListingTable(object):
             # pf.debug(row)
             table = pf.Table(*row, alignment=['AlignDefault'], width=[1])
 
-            pf.debug("listingtable of ", fn)
+            pf.debug("listingtable of", fn)
             return [table, read]
 
 
