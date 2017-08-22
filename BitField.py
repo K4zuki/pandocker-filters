@@ -19,7 +19,7 @@ import panflute as pf
 class BitField(object):
 
     def __init__(self):
-        self.bitfield = pf.shell("which bitfield").strip()
+        self.bitfield = str(pf.shell("which bitfield").strip())
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
