@@ -39,31 +39,32 @@ class BitField(object):
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
         self.svg = ""
+        self.png = ""
+        self.pdf = ""
+        self.eps = ""
 
     def svg2png(self):
         output = [self.pngconvert, self.svg]
-        png = ".".join([str(self.basename), "png"])
+        self.png = ".".join([str(self.basename), "png"])
         if self.unix:
             output.append("--format=png")
         output.append("--output")
         output.append(png)
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
-        return png
 
     def svg2pdf(self):
         output = [self.pdfconvert, self.svg]
-        pdf = ".".join([str(self.basename), "pdf"])
+        self.pdf = ".".join([str(self.basename), "pdf"])
         if self.unix:
             output.append("--format=pdf")
         output.append("--output")
         output.append(pdf)
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
-        return pdf
 
     def svg2eps(self):
-        eps = ".".join([self.basename, "eps"])
+        self.eps = ".".join([self.basename, "eps"])
         output = [self.epsconvert,
                   self.svg,
                   "--format=eps",
@@ -72,7 +73,6 @@ class BitField(object):
                   ]
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
-        return eps
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
@@ -139,13 +139,13 @@ class BitField(object):
             file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
 
         if(toPDF):
-            pdf = self.svg2pdf()
+            self.svg2pdf()
 
         if(toPNG):
-            png = self.svg2png()
+            self.svg2png()
 
         if(toEPS):
-            eps = self.svg2eps()
+            self.svg2eps()
 
         if not attr:
             attr = OrderedDict({})
@@ -156,11 +156,12 @@ class BitField(object):
         title_text = pf.stringify(title).strip()
 
         if doc.format in ["latex"]:
-            linkto = pdf
+            linkto = self.pdf
         elif doc.format in ["html", "html5"]:
             linkto = self.svg
         else:
-            linkto = png
+            linkto = self.png
+
         linkto = os.path.abspath(linkto).replace('\\', '/')
         caption = caption[0]
         caption = caption.content
