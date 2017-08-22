@@ -15,7 +15,8 @@ applies MIT License (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
 
 import os
 import panflute as pf
-import subprocess
+# import subprocess
+from collections import OrderedDict
 
 
 class BitField(object):
@@ -25,31 +26,37 @@ class BitField(object):
         # self.bitfield = "./bitfield/bin/bitfield.js"
         self.counter = 0
         self.unix = True if (os.name) != "nt" else False
-        self.svg2pdf = None
-        self.svg2png = None
-        self.svg2eps = None
+        self.pdfconvert = None
+        self.pngconvert = None
+        self.epsconvert = None
         if self.unix:
-            self.svg2pdf = pf.shell("which rsvg-convert").decode('utf-8').strip()
-            self.svg2png = self.svg2pdf
-            self.svg2eps = self.svg2eps
+            self.pdfconvert = pf.shell("which rsvg-convert").decode('utf-8').strip()
+            self.pngconvert = self.pdfconvert
+            self.epsconvert = self.pdfconvert
         else:
-            self.svg2pdf = "'" + str(pf.shell("which svg2pdf").decode('utf-8').strip()) + "'"
-            self.svg2png = "'" + str(pf.shell("which svg2png").decode('utf-8').strip()) + "'"
+            self.pdfconvert = "'" + str(pf.shell("which svg2pdf").decode('utf-8').strip()) + "'"
+            self.pngconvert = "'" + str(pf.shell("which svg2png").decode('utf-8').strip()) + "'"
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
         source = options.get('input')
-        vspace = str(options.get('vspace', 80))
-        hspace = str(options.get('hspace', 640))
-        lanes = str(options.get('lanes', 2))
-        bits = str(options.get('bits', 16))
+
+        vspace = str(options.get('lane-height', 80))
+        hspace = str(options.get('lane-width', 640))
+        lanes = str(options.get('lanes', 1))
+        bits = str(options.get('bits', 8))
+
         fontfamily = '"' + options.get('fontfamily', 'source code pro') + '"'
         fontsize = str(options.get('fontsize', 16))
         fontweight = options.get('fontweight', "normal")
+
         caption = options.get('caption')
         dir_to = options.get('directory', self.defaultdir_to)
+
+        attr = options.get('attr', {})
+
         toPNG = options.get('png', True)
         toEPS = options.get('eps', False) if self.unix else False
         toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
@@ -63,9 +70,8 @@ class BitField(object):
         assert isinstance(toEPS, bool), "option eps is boolean"
 
         # pf.debug(isinstance(toPNG, bool))
-        pf.debug(toPDF)
-        pf.debug(doc.format)
-
+        # pf.debug(toPDF)
+        # pf.debug(doc.format)
         # pf.debug(bitfield)
         # pf.debug(source)
         # pf.debug(vspace)
@@ -75,13 +81,12 @@ class BitField(object):
         # pf.debug(fontfamily)
         # pf.debug(fontsize)
         # pf.debug(fontweight)
-        if os.path.exists("./" + dir_to) != 1:
-            os.mkdir("./" + dir_to)
+        if os.path.exists(dir_to) != 1:
+            os.mkdir(dir_to)
 
-        _basename = "/".join([".",
-                              dir_to,
-                              str(self.counter)])
-        _svg = ".".join([_basename, "svg"])
+        self.basename = "/".join([dir_to,
+                                  str(self.counter)])
+        self.svg = ".".join([self.basename, "svg"])
         # svg2pdf file.svg --output out.pdf
         # optional arguments:
         #   -h, --help            show this help message and exit
@@ -99,47 +104,53 @@ class BitField(object):
                  "--fontfamily", fontfamily,
                  "--fontsize", fontsize,
                  "--fontweight", fontweight,
-                 ">", _svg
                  ]
         pf.debug(" ".join(toSVG))
-        pf.shell(" ".join(toSVG))
-        # subprocess.call(toSVG)
+        with open(self.svg, 'w') as file:
+            file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
 
         if(toPDF):
-            output = [self.svg2pdf, _svg]
-            if self.unix:
-                output.append("--format=pdf")
-            output.append("--output")
-            output.append(".".join([_basename, "pdf"]))
-            pf.debug(" ".join(output))
-            pf.shell(" ".join(output))
-            subprocess.call(output)
+            self.svg2pdf()
 
         if(toPNG):
-            output = [self.svg2png, _svg]
-            if self.unix:
-                output.append("--format=png")
-            output.append("--output")
-            output.append(".".join([str(_basename), "png"]))
-            pf.debug(" ".join(output))
-            pf.shell(" ".join(output))
-            # subprocess.call(output)
+            self.svg2png()
 
         if(toEPS):
-            output = [self.svg2pdf,
-                      _svg,
-                      "--format=eps"
-                      "--output",
-                      ".".join([_basename, "eps"])
-                      ]
-            pf.debug(" ".join(output))
-            pf.shell(" ".join(output))
-            # subprocess.call(output)
+            self.svg2eps()
 
-        # [pf.debug(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
-        # [pf.shell(command) for command in [_svg2pdf, _svg2png, _svg2eps]]
+        if not attr:
+            attr = OrderedDict({})
+
         self.counter += 1
-        return None
+        return []
+
+    def svg2png(self):
+        output = [self.pngconvert, self.svg]
+        if self.unix:
+            output.append("--format=png")
+        output.append("--output")
+        output.append(".".join([str(self.basename), "png"]))
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
+
+    def svg2pdf(self):
+        output = [self.pdfconvert, self.svg]
+        if self.unix:
+            output.append("--format=pdf")
+        output.append("--output")
+        output.append(".".join([self.basename, "pdf"]))
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
+
+    def svg2eps(self):
+        output = [self.epsconvert,
+                  self.svg,
+                  "--format=eps",
+                  "--output",
+                  ".".join([self.basename, "eps"])
+                  ]
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
 
 
 def main(doc=None):
