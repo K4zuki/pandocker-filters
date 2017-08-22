@@ -38,6 +38,41 @@ class BitField(object):
             self.pngconvert = "'" + str(pf.shell("which svg2png").decode('utf-8').strip()) + "'"
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
+        self.svg = ""
+
+    def svg2png(self):
+        output = [self.pngconvert, self.svg]
+        png = ".".join([str(self.basename), "png"])
+        if self.unix:
+            output.append("--format=png")
+        output.append("--output")
+        output.append(png)
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
+        return png
+
+    def svg2pdf(self):
+        output = [self.pdfconvert, self.svg]
+        pdf = ".".join([str(self.basename), "pdf"])
+        if self.unix:
+            output.append("--format=pdf")
+        output.append("--output")
+        output.append(pdf)
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
+        return pdf
+
+    def svg2eps(self):
+        eps = ".".join([self.basename, "eps"])
+        output = [self.epsconvert,
+                  self.svg,
+                  "--format=eps",
+                  "--output",
+                  eps
+                  ]
+        pf.debug(" ".join(output))
+        pf.shell(" ".join(output))
+        return eps
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
@@ -52,19 +87,19 @@ class BitField(object):
         fontsize = str(options.get('fontsize', 16))
         fontweight = options.get('fontweight', "normal")
 
-        caption = options.get('caption')
+        caption = options.get('caption', "Untitled")
         dir_to = options.get('directory', self.defaultdir_to)
 
         attr = options.get('attr', {})
+        title = options.get('title', "fig:")
+        label = options.get('label', os.path.splitext(os.path.basename(source))[0])
 
         toPNG = options.get('png', True)
         toEPS = options.get('eps', False) if self.unix else False
         toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
 
-        # options.get('pdf', False)
-        # toPDF = options.get('pdf', False)
         assert source is not None, "mandatory option 'input' is not set"
-        assert os.path.exists("./" + source) == 1, "input file does not exist"
+        assert os.path.exists(source) == 1, "input file does not exist"
         assert isinstance(toPNG, bool), "option png is boolean"
         assert isinstance(toPDF, bool), "option pdf is boolean"
         assert isinstance(toEPS, bool), "option eps is boolean"
@@ -87,13 +122,7 @@ class BitField(object):
         self.basename = "/".join([dir_to,
                                   str(self.counter)])
         self.svg = ".".join([self.basename, "svg"])
-        # svg2pdf file.svg --output out.pdf
-        # optional arguments:
-        #   -h, --help            show this help message and exit
-        #   -v, --version         Print version number and exit.
-        #   -o PATH_PAT, --output PATH_PAT
-        # $(RSVG) $<.svg --format=png --output=$@
-        # $(RSVG) $<.svg --output $@
+        self.counter += 1
 
         toSVG = [self.bitfield,
                  "--input", source,
@@ -110,47 +139,43 @@ class BitField(object):
             file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
 
         if(toPDF):
-            self.svg2pdf()
+            pdf = self.svg2pdf()
 
         if(toPNG):
-            self.svg2png()
+            png = self.svg2png()
 
         if(toEPS):
-            self.svg2eps()
+            eps = self.svg2eps()
 
         if not attr:
             attr = OrderedDict({})
 
-        self.counter += 1
-        return []
+        caption = pf.convert_text(caption)
+        title = pf.convert_text(title)
+        title = title[0]
+        title_text = pf.stringify(title).strip()
 
-    def svg2png(self):
-        output = [self.pngconvert, self.svg]
-        if self.unix:
-            output.append("--format=png")
-        output.append("--output")
-        output.append(".".join([str(self.basename), "png"]))
-        pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        if doc.format in ["latex"]:
+            linkto = pdf
+        elif doc.format in ["html", "html5"]:
+            linkto = self.svg
+        else:
+            linkto = png
+        linkto = os.path.abspath(linkto).replace('\\', '/')
+        caption = caption[0]
+        caption = caption.content
 
-    def svg2pdf(self):
-        output = [self.pdfconvert, self.svg]
-        if self.unix:
-            output.append("--format=pdf")
-        output.append("--output")
-        output.append(".".join([self.basename, "pdf"]))
-        pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        # pf.debug(caption)
+        # pf.debug(linkto)
+        # pf.debug(title_text)
+        # pf.debug(label)
+        # pf.debug(attr)
+        img = pf.Image(*caption, url=linkto, title=title_text, attributes=attr)
+        # pf.debug(img)
+        ans = pf.Para(img)
+        # pf.debug(ans)
 
-    def svg2eps(self):
-        output = [self.epsconvert,
-                  self.svg,
-                  "--format=eps",
-                  "--output",
-                  ".".join([self.basename, "eps"])
-                  ]
-        pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        return ans
 
 
 def main(doc=None):
