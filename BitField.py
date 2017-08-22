@@ -49,7 +49,7 @@ class BitField(object):
         if self.unix:
             output.append("--format=png")
         output.append("--output")
-        output.append(png)
+        output.append(self.png)
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
@@ -59,7 +59,7 @@ class BitField(object):
         if self.unix:
             output.append("--format=pdf")
         output.append("--output")
-        output.append(pdf)
+        output.append(self.pdf)
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
@@ -69,7 +69,7 @@ class BitField(object):
                   self.svg,
                   "--format=eps",
                   "--output",
-                  eps
+                  self.eps
                   ]
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
