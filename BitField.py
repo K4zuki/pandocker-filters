@@ -78,6 +78,19 @@ class BitField(object):
         pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
+    def validatejson(self, data=""):
+        ext = ""
+        try:
+            j = json.loads(data)
+        except ValueError:
+            # pf.debug("data is not json")
+            try:
+                data = json.dumps(yaml.load(data), indent=4)
+            except ValueError:
+                # pf.debug("data is not json nor yaml")
+                raise
+        return data
+
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
         source = options.get('input')
@@ -99,21 +112,15 @@ class BitField(object):
 
         self.basename = "/".join([dir_to,
                                   str(self.counter)])
+
         if not source and data is not None:
             # pf.debug("not source and data is not None")
-            source = ".".join([self.basename, "json"])
-            try:
-                j = json.loads(data)
-            except ValueError:
-                pf.debug("data is not json")
-                try:
-                    data = json.dumps(yaml.load(data), indent=4)
-                except ValueError:
-                    # pf.debug("data is not json nor yaml")
-                    raise
-            with open(source, "w", encoding='utf-8') as file:
-                file.write(data)
-            # pf.debug(data)
+            data = self.validatejson(data)
+        else:  # source and data is "dont care"
+            data = self.validatejson(open(source, "r", encoding='utf-8').read())
+
+        source = ".".join([self.basename, "json"])
+        open(source, "w", encoding='utf-8').write(data)
 
         attr = options.get('attr', {})
         title = options.get('title', "fig:")
