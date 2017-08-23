@@ -35,10 +35,10 @@ class BitField(object):
             self.pngconvert = self.pdfconvert
             self.epsconvert = self.pdfconvert
         else:
-            self.pdfconvert = "cmd '" + \
-                str(pf.shell("which svg2pdf").decode('utf-8').strip().replace("/c", "C:").replace(" ", "\ ")) + "'"
-            self.pngconvert = "cmd '" + \
-                str(pf.shell("which svg2png").decode('utf-8').strip().replace("/c", "C:").replace(" ", "\ ")) + "'"
+            svg2png = pf.shell("which svg2png").decode('utf-8').strip()
+            svg2pdf = pf.shell("which svg2pdf").decode('utf-8').strip()
+            self.pdfconvert = "cmd '" + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + "'"
+            self.pngconvert = "cmd '" + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + "'"
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
         self.svg = ""
