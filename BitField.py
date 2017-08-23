@@ -15,8 +15,9 @@ applies MIT License (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
 
 import os
 import panflute as pf
-# import subprocess
 from collections import OrderedDict
+import json
+import yaml
 
 
 class BitField(object):
@@ -93,6 +94,27 @@ class BitField(object):
         caption = options.get('caption', "Untitled")
         dir_to = options.get('directory', self.defaultdir_to)
 
+        if os.path.exists(dir_to) != 1:
+            os.mkdir(dir_to)
+
+        self.basename = "/".join([dir_to,
+                                  str(self.counter)])
+        if not source and data is not None:
+            # pf.debug("not source and data is not None")
+            source = ".".join([self.basename, "json"])
+            try:
+                j = json.loads(data)
+            except ValueError:
+                pf.debug("data is not json")
+                try:
+                    data = json.dumps(yaml.load(data), indent=4)
+                except ValueError:
+                    # pf.debug("data is not json nor yaml")
+                    raise
+            with open(source, "w", encoding='utf-8') as file:
+                file.write(data)
+            # pf.debug(data)
+
         attr = options.get('attr', {})
         title = options.get('title', "fig:")
         label = options.get('label', os.path.splitext(os.path.basename(source))[0])
@@ -100,12 +122,6 @@ class BitField(object):
         toPNG = options.get('png', True)
         toEPS = options.get('eps', False) if self.unix else False
         toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
-
-        assert source is not None, "mandatory option 'input' is not set"
-        assert os.path.exists(source) == 1, "input file does not exist"
-        assert isinstance(toPNG, bool), "option png is boolean"
-        assert isinstance(toPDF, bool), "option pdf is boolean"
-        assert isinstance(toEPS, bool), "option eps is boolean"
 
         # pf.debug(isinstance(toPNG, bool))
         # pf.debug(toPDF)
@@ -119,13 +135,14 @@ class BitField(object):
         # pf.debug(fontfamily)
         # pf.debug(fontsize)
         # pf.debug(fontweight)
-        if os.path.exists(dir_to) != 1:
-            os.mkdir(dir_to)
-
-        self.basename = "/".join([dir_to,
-                                  str(self.counter)])
         self.svg = ".".join([self.basename, "svg"])
         self.counter += 1
+
+        assert source is not None, "mandatory option 'input' is not set"
+        assert os.path.exists(source) == 1, "input file does not exist"
+        assert isinstance(toPNG, bool), "option png is boolean"
+        assert isinstance(toPDF, bool), "option pdf is boolean"
+        assert isinstance(toEPS, bool), "option eps is boolean"
 
         toSVG = [self.bitfield,
                  "--input", source,
@@ -138,8 +155,11 @@ class BitField(object):
                  "--fontweight", fontweight,
                  ]
         pf.debug(" ".join(toSVG))
-        with open(self.svg, 'w') as file:
-            file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
+        with open(self.svg, 'w', encoding='utf-8') as file:
+            try:
+                file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
+            except IOError:
+                raise
 
         if(toPDF):
             self.svg2pdf()
