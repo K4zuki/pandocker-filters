@@ -22,10 +22,11 @@ from collections import OrderedDict
 class BitField(object):
 
     def __init__(self):
-        self.bitfield = pf.shell("which bitfield").decode('utf-8').strip()
-        # self.bitfield = "./bitfield/bin/bitfield.js"
-        self.counter = 0
         self.unix = True if (os.name) != "nt" else False
+        bitfield = pf.shell("which bitfield").decode('utf-8').strip()
+        bitfield_nt = "cmd '" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "'"
+        self.bitfield = bitfield if self.unix else bitfield_nt
+        self.counter = 0
         self.pdfconvert = None
         self.pngconvert = None
         self.epsconvert = None
@@ -34,8 +35,10 @@ class BitField(object):
             self.pngconvert = self.pdfconvert
             self.epsconvert = self.pdfconvert
         else:
-            self.pdfconvert = "'" + str(pf.shell("which svg2pdf").decode('utf-8').strip()) + "'"
-            self.pngconvert = "'" + str(pf.shell("which svg2png").decode('utf-8').strip()) + "'"
+            self.pdfconvert = "cmd '" + \
+                str(pf.shell("which svg2pdf").decode('utf-8').strip().replace("/c", "C:").replace(" ", "\ ")) + "'"
+            self.pngconvert = "cmd '" + \
+                str(pf.shell("which svg2png").decode('utf-8').strip().replace("/c", "C:").replace(" ", "\ ")) + "'"
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
         self.svg = ""
