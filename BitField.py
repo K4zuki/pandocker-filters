@@ -25,7 +25,7 @@ class BitField(object):
     def __init__(self):
         self.unix = True if (os.name) != "nt" else False
         bitfield = pf.shell("which bitfield").decode('utf-8').strip()
-        bitfield_nt = "cmd '" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "'"
+        bitfield_nt = 'bash \'' + bitfield.replace("/c", "C:").replace(" ", "\ ") + '\''
         self.bitfield = bitfield if self.unix else bitfield_nt
         self.counter = 0
         self.pdfconvert = None
@@ -38,8 +38,8 @@ class BitField(object):
         else:
             svg2png = pf.shell("which svg2png").decode('utf-8').strip()
             svg2pdf = pf.shell("which svg2pdf").decode('utf-8').strip()
-            self.pdfconvert = "cmd '" + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + "'"
-            self.pngconvert = "cmd '" + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + "'"
+            self.pdfconvert = 'bash \'' + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + '\''
+            self.pngconvert = 'bash \'' + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + '\''
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
         self.svg = ""
@@ -47,7 +47,8 @@ class BitField(object):
         self.pdf = ""
         self.eps = ""
 
-    def json2svg(self):
+    def json2svg(self, doc):
+
         toSVG = [self.bitfield,
                  "--input", self.source,
                  "--vspace", self.vspace,
@@ -65,13 +66,13 @@ class BitField(object):
             except IOError:
                 raise
 
-        if(toPDF):
+        if(self.toPDF):
             self.svg2pdf()
 
-        if(toPNG):
+        if(self.toPNG):
             self.svg2png()
 
-        if(toEPS):
+        if(self.toEPS):
             self.svg2eps()
 
         if doc.format in ["latex"]:
@@ -128,6 +129,7 @@ class BitField(object):
         return data
 
     def get_options(self, options, data, element, doc):
+        pf.debug("get_options()")
         self.source = options.get('input')
 
         self.vspace = str(options.get('lane-height', 80))
@@ -149,10 +151,10 @@ class BitField(object):
                                   str(self.counter)])
 
         if not self.source and data is not None:
-            pf.debug("not source and data is not None")
+            # pf.debug("not source and data is not None")
             data = self.validatejson(data)
         else:  # source and data is "dont care"
-            data = self.validatejson(open(source, "r", encoding='utf-8').read())
+            data = self.validatejson(open(self.source, "r", encoding='utf-8').read())
 
         self.source = ".".join([self.basename, "json"])
         open(self.source, "w", encoding='utf-8').write(data)
@@ -168,116 +170,37 @@ class BitField(object):
         self.svg = ".".join([self.basename, "svg"])
         self.counter += 1
 
-        # pf.debug(isinstance(toPNG, bool))
-        # pf.debug(toPDF)
+        # pf.debug(isinstance(self.toPNG, bool))
+        # pf.debug(self.toPDF)
         # pf.debug(doc.format)
-        # pf.debug(bitfield)
-        # pf.debug(source)
-        # pf.debug(vspace)
-        # pf.debug(hspace)
-        # pf.debug(lanes)
-        # pf.debug(bits)
-        # pf.debug(fontfamily)
-        # pf.debug(fontsize)
-        # pf.debug(fontweight)
+        # pf.debug(self.bitfield)
+        # pf.debug(self.source)
+        # pf.debug(self.vspace)
+        # pf.debug(self.hspace)
+        # pf.debug(self.lanes)
+        # pf.debug(self.bits)
+        # pf.debug(self.fontfamily)
+        # pf.debug(self.fontsize)
+        # pf.debug(self.fontweight)
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
-        source = options.get('input')
 
-        vspace = str(options.get('lane-height', 80))
-        hspace = str(options.get('lane-width', 640))
-        lanes = str(options.get('lanes', 1))
-        bits = str(options.get('bits', 8))
+        self.get_options(options, data, element, doc)
 
-        fontfamily = '"' + options.get('fontfamily', 'source code pro') + '"'
-        fontsize = str(options.get('fontsize', 16))
-        fontweight = options.get('fontweight', "normal")
+        assert self.source is not None, "mandatory option 'input' is not set"
+        assert os.path.exists(self.source) == 1, "input file does not exist"
+        assert isinstance(self.toPNG, bool), "option png is boolean"
+        assert isinstance(self.toPDF, bool), "option pdf is boolean"
+        assert isinstance(self.toEPS, bool), "option eps is boolean"
 
-        caption = options.get('caption', "Untitled")
-        dir_to = options.get('directory', self.defaultdir_to)
+        self.json2svg(doc)
 
-        if os.path.exists(dir_to) != 1:
-            os.mkdir(dir_to)
-
-        self.basename = "/".join([dir_to,
-                                  str(self.counter)])
-
-        if not source and data is not None:
-            # pf.debug("not source and data is not None")
-            data = self.validatejson(data)
-        else:  # source and data is "dont care"
-            data = self.validatejson(open(source, "r", encoding='utf-8').read())
-
-        source = ".".join([self.basename, "json"])
-        open(source, "w", encoding='utf-8').write(data)
-
-        attr = options.get('attr', {})
-        title = options.get('title', "fig:")
-        label = options.get('label', os.path.splitext(os.path.basename(source))[0])
-
-        toPNG = options.get('png', True)
-        toEPS = options.get('eps', False) if self.unix else False
-        toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
-
-        self.svg = ".".join([self.basename, "svg"])
-        self.counter += 1
-
-        # self.get_options(options, data, elem, doc)
-        # assert self.source is not None, "mandatory option 'input' is not set"
-        # assert os.path.exists(self.source) == 1, "input file does not exist"
-        # assert isinstance(self.toPNG, bool), "option png is boolean"
-        # assert isinstance(self.toPDF, bool), "option pdf is boolean"
-        # assert isinstance(self.toEPS, bool), "option eps is boolean"
-
-        assert source is not None, "mandatory option 'input' is not set"
-        assert os.path.exists(source) == 1, "input file does not exist"
-        assert isinstance(toPNG, bool), "option png is boolean"
-        assert isinstance(toPDF, bool), "option pdf is boolean"
-        assert isinstance(toEPS, bool), "option eps is boolean"
-
-        toSVG = [self.bitfield,
-                 "--input", source,
-                 "--vspace", vspace,
-                 "--hspace", hspace,
-                 "--lanes", lanes,
-                 "--bits", bits,
-                 "--fontfamily", fontfamily,
-                 "--fontsize", fontsize,
-                 "--fontweight", fontweight,
-                 ]
-        pf.debug(" ".join(toSVG))
-        with open(self.svg, 'w', encoding='utf-8') as file:
-            try:
-                file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
-            except IOError:
-                raise
-
-        if(toPDF):
-            self.svg2pdf()
-
-        if(toPNG):
-            self.svg2png()
-
-        if(toEPS):
-            self.svg2eps()
-
-        if doc.format in ["latex"]:
-            linkto = self.pdf
-        elif doc.format in ["html", "html5"]:
-            linkto = self.svg
-        else:
-            linkto = self.png
-
-        linkto = os.path.abspath(linkto).replace('\\', '/')
-
-        # self.json2svg()
-
-        if not attr:
+        if not self.attr:
             attr = OrderedDict({})
 
-        caption = pf.convert_text(caption)
-        title = pf.convert_text(title)
+        caption = pf.convert_text(self.caption)
+        title = pf.convert_text(self.title)
         title = title[0]
         title_text = pf.stringify(title).strip()
 
@@ -289,7 +212,7 @@ class BitField(object):
         # pf.debug(title_text)
         # pf.debug(label)
         # pf.debug(attr)
-        img = pf.Image(*caption, url=linkto, title=title_text, attributes=attr)
+        img = pf.Image(*caption, url=self.linkto, title=title_text, attributes=attr)
         # pf.debug(img)
         ans = pf.Para(img)
         # pf.debug(ans)
