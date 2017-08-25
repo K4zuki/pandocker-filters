@@ -28,22 +28,30 @@ class inline_bitfield(BitField):
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Image) and 'bitfield' in elem.classes:
-            pf.debug("\bitfield()")
-            pf.debug(elem)
+            # pf.debug("bitfield()")
+            # pf.debug(elem)
             fn = elem.url
-            pf.debug(fn)
-            elem.url = "foo"
-            pf.debug(elem)
+            # pf.debug(fn)
             options = elem.attributes
-            pf.debug(options)
+            # pf.debug(options)
 
             with open(fn, 'r', encoding='utf-8') as f:
                 data = f.read()
                 data = self.validatejson(data)
 
             self.get_options(options, data, elem, doc)
+            assert self.source is not None, "mandatory option 'input' is not set"
+            assert os.path.exists(self.source) == 1, "input file does not exist"
+            assert isinstance(self.toPNG, bool), "option png is boolean"
+            assert isinstance(self.toPDF, bool), "option pdf is boolean"
+            assert isinstance(self.toEPS, bool), "option eps is boolean"
 
-            return []
+            self.json2svg(doc)
+
+            elem.url = self.linkto
+            pf.debug(elem)
+
+            # return []
             return elem
 
 
