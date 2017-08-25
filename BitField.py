@@ -18,6 +18,8 @@ import panflute as pf
 from collections import OrderedDict
 import json
 import yaml
+import hashlib
+import datetime
 
 
 class BitField(object):
@@ -147,6 +149,7 @@ class BitField(object):
         if os.path.exists(self.dir_to) != 1:
             os.mkdir(self.dir_to)
 
+        self.counter = hashlib.sha1(datetime.datetime.now().isoformat("-").encode('utf-8')).hexdigest()
         self.basename = "/".join([self.dir_to,
                                   str(self.counter)])
 
@@ -168,7 +171,6 @@ class BitField(object):
         self.toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
 
         self.svg = ".".join([self.basename, "svg"])
-        self.counter += 1
 
         # pf.debug(isinstance(self.toPNG, bool))
         # pf.debug(self.toPDF)
