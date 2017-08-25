@@ -91,6 +91,44 @@ class BitField(object):
                 raise
         return data
 
+    def get_options(self, options, data, element, doc):
+        self.source = options.get('input')
+
+        self.vspace = str(options.get('lane-height', 80))
+        self.hspace = str(options.get('lane-width', 640))
+        self.lanes = str(options.get('lanes', 1))
+        self.bits = str(options.get('bits', 8))
+
+        self.fontfamily = '"' + options.get('fontfamily', 'source code pro') + '"'
+        self.fontsize = str(options.get('fontsize', 16))
+        self.fontweight = options.get('fontweight', "normal")
+
+        self.caption = options.get('caption', "Untitled")
+        self.dir_to = options.get('directory', self.defaultdir_to)
+
+        if os.path.exists(self.dir_to) != 1:
+            os.mkdir(self.dir_to)
+
+        self.basename = "/".join([self.dir_to,
+                                  str(self.counter)])
+
+        if not self.source and data is not None:
+            # pf.debug("not source and data is not None")
+            data = self.validatejson(data)
+        else:  # source and data is "dont care"
+            data = self.validatejson(open(source, "r", encoding='utf-8').read())
+
+        self.source = ".".join([self.basename, "json"])
+        open(self.source, "w", encoding='utf-8').write(data)
+
+        self.attr = options.get('attr', {})
+        self.title = options.get('title', "fig:")
+        self.label = options.get('label', os.path.splitext(os.path.basename(self.source))[0])
+
+        self.toPNG = options.get('png', True)
+        self.toEPS = options.get('eps', False) if self.unix else False
+        self.toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
+
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
         source = options.get('input')
