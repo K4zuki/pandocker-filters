@@ -47,6 +47,42 @@ class BitField(object):
         self.pdf = ""
         self.eps = ""
 
+    def json2svg(self):
+        toSVG = [self.bitfield,
+                 "--input", self.source,
+                 "--vspace", self.vspace,
+                 "--hspace", self.hspace,
+                 "--lanes", self.lanes,
+                 "--bits", self.bits,
+                 "--fontfamily", self.fontfamily,
+                 "--fontsize", self.fontsize,
+                 "--fontweight", self.fontweight,
+                 ]
+        pf.debug(" ".join(toSVG))
+        with open(self.svg, 'w', encoding='utf-8') as file:
+            try:
+                file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
+            except IOError:
+                raise
+
+        if(toPDF):
+            self.svg2pdf()
+
+        if(toPNG):
+            self.svg2png()
+
+        if(toEPS):
+            self.svg2eps()
+
+        if doc.format in ["latex"]:
+            linkto = self.pdf
+        elif doc.format in ["html", "html5"]:
+            linkto = self.svg
+        else:
+            linkto = self.png
+
+        self.linkto = os.path.abspath(linkto).replace('\\', '/')
+
     def svg2png(self):
         output = [self.pngconvert, self.svg]
         self.png = ".".join([str(self.basename), "png"])
@@ -113,7 +149,7 @@ class BitField(object):
                                   str(self.counter)])
 
         if not self.source and data is not None:
-            # pf.debug("not source and data is not None")
+            pf.debug("not source and data is not None")
             data = self.validatejson(data)
         else:  # source and data is "dont care"
             data = self.validatejson(open(source, "r", encoding='utf-8').read())
@@ -128,6 +164,22 @@ class BitField(object):
         self.toPNG = options.get('png', True)
         self.toEPS = options.get('eps', False) if self.unix else False
         self.toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
+
+        self.svg = ".".join([self.basename, "svg"])
+        self.counter += 1
+
+        # pf.debug(isinstance(toPNG, bool))
+        # pf.debug(toPDF)
+        # pf.debug(doc.format)
+        # pf.debug(bitfield)
+        # pf.debug(source)
+        # pf.debug(vspace)
+        # pf.debug(hspace)
+        # pf.debug(lanes)
+        # pf.debug(bits)
+        # pf.debug(fontfamily)
+        # pf.debug(fontsize)
+        # pf.debug(fontweight)
 
     def generate(self, options, data, element, doc):
         # pf.debug("generate()")
@@ -168,20 +220,15 @@ class BitField(object):
         toEPS = options.get('eps', False) if self.unix else False
         toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
 
-        # pf.debug(isinstance(toPNG, bool))
-        # pf.debug(toPDF)
-        # pf.debug(doc.format)
-        # pf.debug(bitfield)
-        # pf.debug(source)
-        # pf.debug(vspace)
-        # pf.debug(hspace)
-        # pf.debug(lanes)
-        # pf.debug(bits)
-        # pf.debug(fontfamily)
-        # pf.debug(fontsize)
-        # pf.debug(fontweight)
         self.svg = ".".join([self.basename, "svg"])
         self.counter += 1
+
+        # self.get_options(options, data, elem, doc)
+        # assert self.source is not None, "mandatory option 'input' is not set"
+        # assert os.path.exists(self.source) == 1, "input file does not exist"
+        # assert isinstance(self.toPNG, bool), "option png is boolean"
+        # assert isinstance(self.toPDF, bool), "option pdf is boolean"
+        # assert isinstance(self.toEPS, bool), "option eps is boolean"
 
         assert source is not None, "mandatory option 'input' is not set"
         assert os.path.exists(source) == 1, "input file does not exist"
@@ -215,14 +262,6 @@ class BitField(object):
         if(toEPS):
             self.svg2eps()
 
-        if not attr:
-            attr = OrderedDict({})
-
-        caption = pf.convert_text(caption)
-        title = pf.convert_text(title)
-        title = title[0]
-        title_text = pf.stringify(title).strip()
-
         if doc.format in ["latex"]:
             linkto = self.pdf
         elif doc.format in ["html", "html5"]:
@@ -231,6 +270,17 @@ class BitField(object):
             linkto = self.png
 
         linkto = os.path.abspath(linkto).replace('\\', '/')
+
+        # self.json2svg()
+
+        if not attr:
+            attr = OrderedDict({})
+
+        caption = pf.convert_text(caption)
+        title = pf.convert_text(title)
+        title = title[0]
+        title_text = pf.stringify(title).strip()
+
         caption = caption[0]
         caption = caption.content
 
