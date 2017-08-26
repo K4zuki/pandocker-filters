@@ -51,20 +51,20 @@ class BitField(object):
 
     def json2svg(self, doc):
 
-        toSVG = [self.bitfield,
-                 "--input", self.source,
-                 "--vspace", self.vspace,
-                 "--hspace", self.hspace,
-                 "--lanes", self.lanes,
-                 "--bits", self.bits,
-                 "--fontfamily", self.fontfamily,
-                 "--fontsize", self.fontsize,
-                 "--fontweight", self.fontweight,
-                 ]
-        pf.debug(" ".join(toSVG))
+        self.toSVG = [self.bitfield,
+                      "--input", self.source,
+                      "--vspace", self.vspace,
+                      "--hspace", self.hspace,
+                      "--lanes", self.lanes,
+                      "--bits", self.bits,
+                      "--fontfamily", self.fontfamily,
+                      "--fontsize", self.fontsize,
+                      "--fontweight", self.fontweight,
+                      ]
+        pf.debug(" ".join(self.toSVG))
         with open(self.svg, 'w', encoding='utf-8') as file:
             try:
-                file.write(pf.shell(" ".join(toSVG)).decode('utf-8'))
+                file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
             except IOError:
                 raise
 
