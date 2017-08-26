@@ -48,8 +48,9 @@ class BitField(object):
         self.png = ""
         self.pdf = ""
         self.eps = ""
+        self.doc = ""
 
-    def json2svg(self, doc):
+    def json2svg(self):
 
         self.toSVG = [self.bitfield,
                       "--input", self.source,
@@ -68,6 +69,7 @@ class BitField(object):
             except IOError:
                 raise
 
+    def svg2image(self):
         if(self.toPDF):
             self.svg2pdf()
 
@@ -77,9 +79,9 @@ class BitField(object):
         if(self.toEPS):
             self.svg2eps()
 
-        if doc.format in ["latex"]:
+        if self.doc.format in ["latex"]:
             linkto = self.pdf
-        elif doc.format in ["html", "html5"]:
+        elif self.doc.format in ["html", "html5"]:
             linkto = self.svg
         else:
             linkto = self.png
@@ -131,6 +133,8 @@ class BitField(object):
         return data
 
     def get_options(self, options, data, element, doc):
+        self.doc = doc
+
         pf.debug("get_options()")
         self.source = options.get('input')
 
@@ -149,9 +153,6 @@ class BitField(object):
         if os.path.exists(self.dir_to) != 1:
             os.mkdir(self.dir_to)
 
-        self.basename = "/".join([self.dir_to,
-                                  str(self.counter)])
-
         if not self.source and data is not None:
             # pf.debug("not source and data is not None")
             data = self.validatejson(data)
@@ -159,6 +160,8 @@ class BitField(object):
             data = self.validatejson(open(self.source, "r", encoding='utf-8').read())
 
         self.counter = hashlib.sha1(data.encode('utf-8')).hexdigest()[:8]
+        self.basename = "/".join([self.dir_to,
+                                  str(self.counter)])
 
         self.source = ".".join([self.basename, "json"])
         open(self.source, "w", encoding='utf-8').write(data)
@@ -197,7 +200,8 @@ class BitField(object):
         assert isinstance(self.toPDF, bool), "option pdf is boolean"
         assert isinstance(self.toEPS, bool), "option eps is boolean"
 
-        self.json2svg(doc)
+        self.json2svg()
+        self.svg2image()
 
         if not self.attr:
             attr = OrderedDict({})

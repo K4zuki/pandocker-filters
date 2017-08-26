@@ -28,7 +28,8 @@ class inline_bitfield(BitField):
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Image) and 'bitfield' in elem.classes:
-            # pf.debug("bitfield()")
+            self.doc = doc
+            # pf.debug("bitfield_inline()")
             # pf.debug(elem)
             fn = elem.url
             # pf.debug(fn)
@@ -46,7 +47,8 @@ class inline_bitfield(BitField):
             assert isinstance(self.toPDF, bool), "option pdf is boolean"
             assert isinstance(self.toEPS, bool), "option eps is boolean"
 
-            self.json2svg(doc)
+            self.json2svg()
+            self.svg2image()
 
             elem.url = self.linkto
             # pf.debug(elem)
