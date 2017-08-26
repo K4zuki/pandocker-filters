@@ -149,7 +149,6 @@ class BitField(object):
         if os.path.exists(self.dir_to) != 1:
             os.mkdir(self.dir_to)
 
-        self.counter = hashlib.sha1(datetime.datetime.now().isoformat("-").encode('utf-8')).hexdigest()
         self.basename = "/".join([self.dir_to,
                                   str(self.counter)])
 
@@ -158,6 +157,8 @@ class BitField(object):
             data = self.validatejson(data)
         else:  # source and data is "dont care"
             data = self.validatejson(open(self.source, "r", encoding='utf-8').read())
+
+        self.counter = hashlib.sha1(data.encode('utf-8')).hexdigest()[:8]
 
         self.source = ".".join([self.basename, "json"])
         open(self.source, "w", encoding='utf-8').write(data)

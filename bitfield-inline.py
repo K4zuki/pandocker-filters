@@ -49,7 +49,7 @@ class inline_bitfield(BitField):
             self.json2svg(doc)
 
             elem.url = self.linkto
-            pf.debug(elem)
+            # pf.debug(elem)
 
             # return []
             return elem
