@@ -8,32 +8,33 @@ import io
 import csv
 import panflute as pf
 import codecs
-# import pypandoc
+from RotateImage import RotateImage
 
 
-def prepare(doc):
-    pass
+class rotateimage_inline(RotateImage):
 
+    def __init__(self):
+        super().__init__()
 
-def action(elem, doc):
-    # pf.debug("action()")
-    if isinstance(elem, pf.Image):
-        pf.debug(elem.attributes)
-        pf.debug(elem.parent)
-        pf.debug(elem.prev)
-        pf.debug(elem.next)
+    def action(self, elem, doc):
+        # pf.debug("action()")
+        if isinstance(elem, pf.Image)and 'rotate' in elem.classes:
+            pf.debug(elem)
+            self.doc = doc
+            fn = elem.url
+            pf.debug("rotate image of", fn)
+            options = elem.attributes
+            angle = int(options.get('angle', 0))
+            fn = self.rotate(fn, angle)
 
-    return None
+            elem.url = fn
 
-
-def finalize(doc):
-    pass
+        return elem
 
 
 def main(doc=None):
-    return pf.run_filter(action,
-                         prepare=prepare,
-                         finalize=finalize,
+    ri = rotateimage_inline()
+    return pf.run_filter(ri.action,
                          doc=doc)
 
 
