@@ -51,7 +51,7 @@ class inline_bitfield(BitField):
             self.svg2image()
 
             elem.url = self.linkto
-            # pf.debug(elem)
+            pf.debug("[inline] generate bitfield from", self.linkto)
 
             # return []
             return elem

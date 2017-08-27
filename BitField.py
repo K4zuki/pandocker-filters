@@ -62,7 +62,7 @@ class BitField(object):
                       "--fontsize", self.fontsize,
                       "--fontweight", self.fontweight,
                       ]
-        pf.debug(" ".join(self.toSVG))
+        # pf.debug(" ".join(self.toSVG))
         with open(self.svg, 'w', encoding='utf-8') as file:
             try:
                 file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
@@ -95,7 +95,7 @@ class BitField(object):
             output.append("--format=png")
         output.append("--output")
         output.append(self.png)
-        pf.debug(" ".join(output))
+        # pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
     def svg2pdf(self):
@@ -105,7 +105,7 @@ class BitField(object):
             output.append("--format=pdf")
         output.append("--output")
         output.append(self.pdf)
-        pf.debug(" ".join(output))
+        # pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
     def svg2eps(self):
@@ -116,7 +116,7 @@ class BitField(object):
                   "--output",
                   self.eps
                   ]
-        pf.debug(" ".join(output))
+        # pf.debug(" ".join(output))
         pf.shell(" ".join(output))
 
     def validatejson(self, data=""):
@@ -135,7 +135,7 @@ class BitField(object):
     def get_options(self, options, data, element, doc):
         self.doc = doc
 
-        pf.debug("get_options()")
+        # pf.debug("get_options()")
         self.source = options.get('input')
 
         self.vspace = str(options.get('lane-height', 80))
@@ -219,6 +219,7 @@ class BitField(object):
         # pf.debug(title_text)
         # pf.debug(label)
         # pf.debug(attr)
+        pf.debug("generate bitfield from", self.linkto)
         img = pf.Image(*caption, url=self.linkto, title=title_text, attributes=attr)
         # pf.debug(img)
         ans = pf.Para(img)

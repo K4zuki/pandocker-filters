@@ -38,7 +38,7 @@ class wavedrom_inline(BitField):
     def action(self, elem, doc):
         if isinstance(elem, pf.Image) and 'wavedrom' in elem.classes:
             self.doc = doc
-            pf.debug("wavedrom-inline()")
+            # pf.debug("wavedrom-inline()")
             # pf.debug(elem)
             fn = elem.url
             # pf.debug(fn)
@@ -60,7 +60,7 @@ class wavedrom_inline(BitField):
             self.svg2image()
 
             elem.url = self.linkto
-            # pf.debug(elem)
+            pf.debug("[inline] generate wavedrom from", self.linkto)
 
             # return []
             return elem
@@ -74,8 +74,8 @@ class wavedrom_inline(BitField):
                       "-i", self.source,
                       "-s", self.svg
                       ]
-        pf.debug(" ".join(self.toSVG))
-        pf.debug(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
+        # pf.debug(" ".join(self.toSVG))
+        pf.shell(" ".join(self.toSVG)).decode('utf-8')
         # with open(self.svg, 'w', encoding='utf-8') as file:
         #     try:
         #         file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
