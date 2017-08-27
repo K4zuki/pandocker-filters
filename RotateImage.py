@@ -67,9 +67,9 @@ class RotateImage(object):
         # pf.debug(doc.get_metadata('include', 'no hoge'))
         # pf.debug(element.attributes)
         # pf.debug(element.parent)
-        # pf.debug(element.prev)
+        # pf.debug("prev", element.prev)
         # pf.debug(element)
-        # pf.debug(element.next)
+        # pf.debug("next", element.next)
         # Para(
         #     Image(
         #         Strong(Str(caption));
@@ -106,11 +106,11 @@ class RotateImage(object):
         if caption:
             caption = pf.convert_text(caption)
             caption = caption[0].content
-            img = pf.Image(*caption, url=fn, title=title_text, identifier=label, attributes=attr)
+            img = pf.Image(*caption, url=fn, title=title_text, attributes=attr)
         else:
-            img = pf.Image(url=fn, title=title_text, identifier=label, attributes=attr)
+            img = pf.Image(url=fn, attributes=attr)
         ans = pf.Para(img)
-        # pf.debug(ans)
+        # pf.debug("ans", ans)
         return ans
 
 
