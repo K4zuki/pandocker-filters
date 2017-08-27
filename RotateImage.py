@@ -84,7 +84,7 @@ class RotateImage(object):
         pf.debug("rotate image of", fn)
         fn = os.path.abspath(fn).replace('\\', '/')
         title = options.get('title', 'fig:')
-        caption = options.get('caption', 'Untitled')
+        caption = options.get('caption')
         label = options.get('label', os.path.splitext(os.path.basename(fn))[0])
         angle = options.get('angle', 0)
         attr = options.get('attr', {})
@@ -93,7 +93,6 @@ class RotateImage(object):
 
         fn = self.rotate(fn, angle)
         title = pf.convert_text(title)
-        caption = pf.convert_text(caption)
 
         if not attr:
             attr = OrderedDict({})
@@ -103,10 +102,13 @@ class RotateImage(object):
         title = title[0]
         title_text = pf.stringify(title).strip()
 
-        caption = caption[0]
-        caption = caption.content
-
-        img = pf.Image(*caption, url=fn, title=title_text, identifier=label, attributes=attr)
+        # pf.debug(caption)
+        if caption:
+            caption = pf.convert_text(caption)
+            caption = caption[0].content
+            img = pf.Image(*caption, url=fn, title=title_text, identifier=label, attributes=attr)
+        else:
+            img = pf.Image(url=fn, title=title_text, identifier=label, attributes=attr)
         ans = pf.Para(img)
         # pf.debug(ans)
         return ans
