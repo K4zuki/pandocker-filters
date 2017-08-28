@@ -18,7 +18,7 @@ class rotateimage_inline(RotateImage):
 
     def action(self, elem, doc):
         # pf.debug("action()")
-        if isinstance(elem, pf.Image)and 'rotate' in elem.classes:
+        if isinstance(elem, pf.Image) and 'rotate' in elem.classes:
             self.doc = doc
             fn = elem.url
             pf.debug("[inline] rotate image of", fn)

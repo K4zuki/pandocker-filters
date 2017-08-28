@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+w  # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 # simple SVG rotate script
@@ -33,20 +33,24 @@ class rotatesvg(object):
     def get_offset(self, width, height, angle):
         offset_x = 0
         offset_y = 0
-        debug(angle)
-        if(0 < angle <= 90):
-            offset_x = float(height) * abs(math.sin(math.radians(angle)))
-        elif(90 < angle <= 180):
-            offset_x = float(width) * abs(math.cos(math.radians(angle))) + \
-                float(height) * abs(math.sin(math.radians(angle)))
-            # offset_y = float(width) * abs(math.sin(math.radians(angle)))
-            offset_y = float(height) * abs(math.sin(math.radians(angle)))
-        elif(180 < angle <= 270):
-            offset_x = float(width) * abs(math.cos(math.radians(angle))) + \
-                float(height) * abs(math.sin(math.radians(angle)))
-            offset_y = float(width) * abs(math.sin(math.radians(angle)))
-        elif(270 < angle < 360):
-            offset_y = float(width) * abs(math.sin(math.radians(angle)))
+        rad = math.radians(angle)
+        w = float(width)
+        h = float(height)
+        if(0 < angle <= 180):
+            offset_x = h * abs(math.sin(rad))
+            debug("0 < ", angle, " <= 180")
+            if(90 < angle <= 180):
+                offset_x += w * abs(math.cos(rad))
+                # offset_y = w * abs(math.sin(rad))
+                offset_y = h * abs(math.cos(rad))
+                debug("90 < ", angle, " <= 180")
+        elif(180 < angle < 360):
+            offset_y = w * abs(math.sin(rad))
+            debug("180 < ", angle, " < 360")
+            if(180 < angle <= 270):
+                offset_x = float(width) * abs(math.cos(rad))
+                offset_y += h * abs(math.cos(rad))
+                debug("180 < ", angle, " <= 270")
         else:
             pass
         # debug(offset_x, offset_y)

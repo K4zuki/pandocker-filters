@@ -15,6 +15,7 @@ from string import Template
 import panflute as pf
 from PIL import Image
 from collections import OrderedDict
+from rotatesvg import rotatesvg
 
 # ---------------------------
 # Functions
@@ -38,29 +39,34 @@ class RotateImage(object):
 
     def rotate(self, filename="", angle=0):
 
-        with Image.open(filename) as img:
-            path, ext = os.path.splitext(filename)
-            rotater = {90: img.transpose(Image.ROTATE_90),
-                       180: img.transpose(Image.ROTATE_180),
-                       270: img.transpose(Image.ROTATE_270),
-                       }
-            angle = angle % 360
-            if(angle == 0):
-                pass
+        pf.debug(angle)
+        angle = angle % 360.0
+        path, ext = os.path.splitext(filename)
+        if(angle == 0):
+            pass
+        else:
+            if(angle < 0):
+                angle = 360 - abs(angle)
+            # pf.debug(angle)
+
+            if(ext == ".svg"):
+                rs = rotatesvg()
+                tmp = rs.rotate(filename, angle)
             else:
-                if(angle < 0):
-                    angle = 360 - abs(angle)
-                if angle in self.angles:
-                    filename = "%s_r%s%s" % (path, self.angle_str[angle], ext)
-                    tmp = rotater[angle]
-                else:
-                    # print angle
-                    filename = "%s_r%+03d%s" % (path, angle, ext)
-                    tmp = img.rotate(angle, expand=True)
-                if not os.path.exists(filename):
-                    tmp.save(filename)
+                tmp = self.do_rotate(filename, angle)
+
+            renamed = "%s_r%+03d%s" % (path, angle, ext)
+            if not os.path.exists(renamed):
+                tmp.save(renamed)
+            filename = renamed
 
         return filename
+
+    def do_rotate(self, filename, angle):
+        with Image.open(filename) as img:
+            # print angle
+            tmp = img.rotate(angle, expand=True)
+        return tmp
 
     def figure(self, options, data, element, doc):
 
