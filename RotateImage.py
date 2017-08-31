@@ -16,6 +16,7 @@ import panflute as pf
 from PIL import Image
 from collections import OrderedDict
 from rotatesvg import rotatesvg
+from BitField import BitField
 
 # ---------------------------
 # Functions
@@ -33,9 +34,8 @@ def finalize(doc):
 class RotateImage(object):
 
     def __init__(self):
-        self.processed_images = []
-        self.angles = [90, 180, 270]
-        self.angle_str = {90: "+090", 180: "_180", 270: "-090"}
+        self.bf = BitField()
+        self.rs = rotatesvg()
 
     def rotate(self, filename="", angle=0):
 
@@ -49,15 +49,23 @@ class RotateImage(object):
                 angle = 360 - abs(angle)
             # pf.debug(angle)
 
-            if(ext == ".svg"):
-                rs = rotatesvg()
-                tmp = rs.rotate(filename, angle)
+            if(ext == ".svg" or ext == ".pdf"):
+                filename = "".join([path, ".svg"])
+                tmp = self.rs.rotate(filename, angle)
+                renamed = "%s_r%+03d%s" % (path, angle, ".svg")
             else:
                 tmp = self.do_rotate(filename, angle)
+                renamed = "%s_r%+03d%s" % (path, angle, ext)
 
-            renamed = "%s_r%+03d%s" % (path, angle, ext)
             if not os.path.exists(renamed):
                 tmp.save(renamed)
+            if(ext == ".pdf"):
+                self.bf.svg = renamed
+                self.bf.basename = os.path.splitext(renamed)[0]
+                self.bf.svg2pdf()
+                renamed = self.bf.pdf
+                pf.debug("pdf", self.bf.pdf)
+
             filename = renamed
 
         return filename
