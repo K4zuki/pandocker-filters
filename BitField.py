@@ -63,11 +63,12 @@ class BitField(object):
                       "--fontweight", self.fontweight,
                       ]
         # pf.debug(" ".join(self.toSVG))
-        with open(self.svg, 'w', encoding='utf-8') as file:
-            try:
-                file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
-            except IOError:
-                raise
+        if not os.path.exists(self.svg):
+            with open(self.svg, 'w', encoding='utf-8') as file:
+                try:
+                    file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
+                except IOError:
+                    raise
 
     def svg2image(self):
         if(self.toPDF):
@@ -96,7 +97,10 @@ class BitField(object):
         output.append("--output")
         output.append(self.png)
         # pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        if not os.path.exists(self.png):
+            pf.shell(" ".join(output))
+        else:
+            pf.debug("bypass conversion as output exists:", self.png)
 
     def svg2pdf(self):
         output = [self.pdfconvert, self.svg]
@@ -106,7 +110,10 @@ class BitField(object):
         output.append("--output")
         output.append(self.pdf)
         # pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        if not os.path.exists(self.pdf):
+            pf.shell(" ".join(output))
+        else:
+            pf.debug("bypass conversion as output exists:", self.pdf)
 
     def svg2eps(self):
         self.eps = ".".join([self.basename, "eps"])
@@ -117,7 +124,10 @@ class BitField(object):
                   self.eps
                   ]
         # pf.debug(" ".join(output))
-        pf.shell(" ".join(output))
+        if not os.path.exists(self.eps):
+            pf.shell(" ".join(output))
+        else:
+            pf.debug("bypass conversion as output exists:", self.eps)
 
     def validatejson(self, data=""):
         ext = ""
