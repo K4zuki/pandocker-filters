@@ -39,7 +39,7 @@ class RotateImage(object):
 
     def rotate(self, filename="", angle=0):
 
-        pf.debug(angle)
+        # pf.debug(angle)
         angle = angle % 360.0
         path, ext = os.path.splitext(filename)
         if(angle == 0):
