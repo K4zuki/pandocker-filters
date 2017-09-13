@@ -20,6 +20,7 @@ import json
 import yaml
 import hashlib
 import datetime
+from shutil import which
 
 
 class BitField(object):
@@ -34,12 +35,13 @@ class BitField(object):
         self.pngconvert = None
         self.epsconvert = None
         if self.unix:
-            self.pdfconvert = pf.shell("which rsvg-convert").decode('utf-8').strip()
+            # pf.debug(which("rsvg-convert"))
+            self.pdfconvert = which("rsvg-convert")
             self.pngconvert = self.pdfconvert
             self.epsconvert = self.pdfconvert
         else:
-            svg2png = pf.shell("which svg2png").decode('utf-8').strip()
-            svg2pdf = pf.shell("which svg2pdf").decode('utf-8').strip()
+            svg2png = which("svg2png")
+            svg2pdf = which("svg2pdf")
             self.pdfconvert = 'bash \'' + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + '\''
             self.pngconvert = 'bash \'' + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + '\''
             pf.debug("non-UNIX OS!")
