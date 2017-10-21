@@ -102,7 +102,7 @@ class BitField(object):
         output.append(self.png)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.png):
-            subprocess.call(" ".join(outputs), shell=True)
+            subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.png)
 
