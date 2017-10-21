@@ -21,13 +21,14 @@ import yaml
 import hashlib
 import datetime
 from shutil import which
+import subprocess
 
 
 class BitField(object):
 
     def __init__(self):
         self.unix = True if (os.name) != "nt" else False
-        bitfield = pf.shell("which bitfield").decode('utf-8').strip()
+        bitfield = which("bitfield")
         bitfield_nt = 'bash \'' + bitfield.replace("/c", "C:").replace(" ", "\ ") + '\''
         self.bitfield = bitfield if self.unix else bitfield_nt
         self.counter = 0
@@ -63,12 +64,13 @@ class BitField(object):
                       "--fontfamily", self.fontfamily,
                       "--fontsize", self.fontsize,
                       "--fontweight", self.fontweight,
+                      ">", self.svg,
                       ]
         # pf.debug(" ".join(self.toSVG))
         if not os.path.exists(self.svg):
             with open(self.svg, 'w', encoding='utf-8') as file:
                 try:
-                    file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
+                    subprocess.call(" ".join(self.toSVG), shell=True)
                 except IOError:
                     raise
 
@@ -100,7 +102,7 @@ class BitField(object):
         output.append(self.png)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.png):
-            pf.shell(" ".join(output))
+            subprocess.call(" ".join(outputs), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.png)
 
@@ -113,7 +115,7 @@ class BitField(object):
         output.append(self.pdf)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.pdf):
-            pf.shell(" ".join(output))
+            subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.pdf)
 

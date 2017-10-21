@@ -20,6 +20,8 @@ from collections import OrderedDict
 import json
 import yaml
 from BitField import BitField
+from shutil import which
+import subprocess
 
 
 class wavedrom_inline(BitField):
@@ -27,11 +29,11 @@ class wavedrom_inline(BitField):
     def __init__(self):
         super().__init__()
 
-        phantomjs = pf.shell("which phantomjs").decode('utf-8').strip()
+        phantomjs = which("phantomjs")
         phantomjs_nt = 'bash \'' + phantomjs.replace("/c", "C:").replace(" ", "\ ") + '\''
         self.phantomjs = phantomjs if self.unix else phantomjs_nt
 
-        wavedrom = pf.shell("which wavedrom").decode('utf-8').strip()
+        wavedrom = which("wavedrom")
         wavedrom_nt = 'bash \'' + wavedrom.replace("/c", "C:").replace(" ", "\ ") + '\''
         self.wavedrom = wavedrom if self.unix else wavedrom_nt
 
@@ -75,7 +77,7 @@ class wavedrom_inline(BitField):
                       "-s", self.svg
                       ]
         # pf.debug(" ".join(self.toSVG))
-        pf.shell(" ".join(self.toSVG)).decode('utf-8')
+        subprocess.call(self.toSVG)
         # with open(self.svg, 'w', encoding='utf-8') as file:
         #     try:
         #         file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
