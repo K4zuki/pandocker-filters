@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
+""" pandoc-listingtable
 Panflute filter to parse Any text in fenced YAML code blocks
 http://scorreia.com/software/panflute/guide.html#yaml-code-blocks
 

@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-""" pandoc-wavedrom
+""" wavedrom-inline
 Yet another pandoc filter which plays with bitfield interpreter
-the filter finds out code block of "bitfield" class,
-then throws given code or file to bitfield,
+the filter finds out code block of "wavedrom" class,
+then throws given code or file to wavedrom,
 saves generated image in specified directory.
 the codeblock will be replaced by an image link
-pandoc
-wavedrom
-phantomjs
-panflute
 
 applies MIT License (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
 """
