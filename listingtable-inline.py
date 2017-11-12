@@ -23,18 +23,25 @@ class inline_listingtable(ListingTable):
                 # subelem = elem.content[0]
                 # pf.debug(isinstance(elem.content[0], pf.Image))
                 if isinstance(subelem, pf.Image) and 'listingtable' in subelem.classes:
+                    index = elem.content.index(subelem)
+                    pf.debug(index)
                     self.doc = doc
                     self.counter -= 1
                     # pf.debug("inline_listingtable.action()")
                     # pf.debug(subelem)
                     fn = subelem.url
+                    options = subelem.attributes
+                    idn = subelem.identifier
+                    caption = subelem.content
                     # pf.debug(fn)
+                    # pf.debug(options)
+                    # pf.debug(idn)
+                    # pf.debug(len(caption))
                     basename = os.path.basename(fn)
                     label = basename.lower().replace(".", "_").replace("/", "_") + str(self.counter)
+                    idn = idn if idn else "lst:{label:s}".format(label=label)
 
-                    options = subelem.attributes
-                    # pf.debug(options)
-                    file_type = options.get('type', 'plain')
+                    file_type = options.get('type', 'text')
                     # pf.debug(file_type)
 
                     types = [file_type, 'numberLines']
@@ -42,14 +49,14 @@ class inline_listingtable(ListingTable):
                     file_title = basename
                     if self.doc.format in ["latex"]:
                         file_title = basename.replace("_", "\textunderscore")
-
-                    header_caption = pf.Para(pf.Str("Listing:"), pf.Space(), pf.Str("%s" % (file_title)))
+                    caption = [pf.Str("%s" % (file_title))] if not len(caption) else caption
+                    header_caption = pf.Para(pf.Str("Listing:"), pf.Space(), *caption)
 
                     with open(fn, 'r', encoding='utf-8') as f:
                         raw = f.read()
                         # data = self.validatejson(data)
-                    read = pf.CodeBlock(raw, classes=types, identifier="lst:%s" %
-                                        (label), attributes={"numbers": "left"})
+                    attr = {"numbers": "left"}
+                    read = pf.CodeBlock(raw, classes=types, identifier=idn, attributes=attr)
 
                     pf.debug("inline listingtable of", fn)
                     ret.append(header_caption)
