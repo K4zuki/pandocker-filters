@@ -17,7 +17,7 @@ class inline_listingtable(ListingTable):
 
     def action(self, elem, doc):
         ret = []
-        if isinstance(elem, pf.Para) and isinstance(elem.content[0], pf.Image):
+        if isinstance(elem, pf.Para) and hasattr(elem.content, "pf.Image"):
             # if isinstance(elem, pf.Image):
             for subelem in elem.content:
                 # subelem = elem.content[0]
