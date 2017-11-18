@@ -44,10 +44,11 @@ class inline_listingtable(ListingTable):
 
         types = [file_type, 'numberLines']
 
-        file_title = basename
         if self.doc.format in ["latex"]:
             file_title = basename.replace("_", "\textunderscore")
-            temp_caption = [pf.Str("%s" % (file_title))]
+        else:
+            file_title = basename
+        temp_caption = [pf.Str("%s" % (file_title))]
         caption = temp_caption if not len(caption) else caption
 
         with open(fn, 'r', encoding='utf-8') as f:
