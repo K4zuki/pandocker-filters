@@ -67,19 +67,24 @@ class ListingTable(object):
     def action(self, options, data, element, doc):
         self.doc = doc
         self.counter += 1
-        # We'll only run this for CodeBlock elements of class 'listingtable'
+        # We'll only run this for CodeBlock elements of class "listingtable"
 
-        fn = options.get('source')
+        fn = options.get("source")
         idn = element.identifier
-        caption = options.get('caption', "")
+        caption = options.get("caption", "")
+        pf.debug("listingtable of", fn)
         ret = self.listingtable(filename=fn, idn=idn, caption=caption, options=options)
         return ret
 
     def listingtable(self, filename, idn, caption, options):
         basename = os.path.basename(filename)
-        file_type = options.get('type', 'plain')
-        types = [file_type, 'numberLines']
+        file_type = options.get("type", "plain")
+        types = [file_type, "numberLines"]
         attr = {"numbers": "left"}
+        linefrom = options.get("from", 0)
+        linefrom = 0 if linefrom < 0 else (linefrom - 1)
+        lineto = options.get("to", -1)
+        linefrom = 0 if linefrom < 0 else (linefrom)
 
         if self.doc.format in ["latex"]:
             file_title = basename.replace("_", "\textunderscore")
@@ -89,23 +94,23 @@ class ListingTable(object):
         temp_caption = [pf.Str("%s" % (file_title))]
         caption = temp_caption if not len(caption) else caption
 
-        with open(filename, 'r', encoding='utf-8') as f:
-            raw = f.read()
+        with open(filename, "r", encoding="utf-8") as f:
+            lines = list(f)
+        raw = "".join(lines[linefrom:lineto])
 
         label = basename.lower().replace(".", "_").replace("/", "_") + str(self.counter)
         idn = idn if idn else "lst:{label:s}".format(label=label)
 
         read = pf.CodeBlock(raw, classes=types, identifier=idn, attributes=attr)
 
-        pf.debug("listingtable of", filename)
         ret = [pf.Para(pf.Str("Listing:"), pf.Space(), *caption), read]
         return ret
 
 
 def main(doc=None):
     lt = ListingTable()
-    return pf.run_filter(pf.yaml_filter, tag='listingtable', function=lt.action, doc=doc)
+    return pf.run_filter(pf.yaml_filter, tag="listingtable", function=lt.action, doc=doc)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

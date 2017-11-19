@@ -25,6 +25,7 @@ class inline_listingtable(ListingTable):
                     options = subelem.attributes
                     idn = subelem.identifier
                     caption = subelem.content
+                    pf.debug("[inline] inline listingtable of", fn)
                     elem = self.listingtable(filename=fn, idn=idn, caption=caption, options=options)
                     # return ret
                     # elem = self.listingtable(subelem)
