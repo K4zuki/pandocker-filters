@@ -84,7 +84,7 @@ class ListingTable(object):
         linefrom = options.get("from")
         lineto = options.get("to")
         linefrom = 0 if not linefrom else (int(linefrom) - 1)
-        lineto = -1 if not lineto else int(lineto)
+        lineto = -1 if not lineto else int(lineto + 1)
 
         if self.doc.format in ["latex"]:
             file_title = basename.replace("_", "\textunderscore")
