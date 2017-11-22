@@ -81,10 +81,10 @@ class ListingTable(object):
         file_type = options.get("type", "plain")
         types = [file_type, "numberLines"]
         attr = {"numbers": "left"}
-        linefrom = int(options.get("from"))
-        lineto = int(options.get("to"))
-        linefrom = 0 if not linefrom else (linefrom - 1)
-        lineto = -1 if not lineto else (lineto)
+        linefrom = options.get("from")
+        lineto = options.get("to")
+        linefrom = 0 if not linefrom else (int(linefrom) - 1)
+        lineto = -1 if not lineto else int(lineto)
 
         if self.doc.format in ["latex"]:
             file_title = basename.replace("_", "\textunderscore")
