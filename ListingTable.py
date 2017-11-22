@@ -83,8 +83,8 @@ class ListingTable(object):
         attr = {"numbers": "left"}
         linefrom = options.get("from")
         lineto = options.get("to")
-        linefrom = 0 if not linefrom else (int(linefrom) - 1)
-        lineto = -1 if not lineto else (int(lineto) + 1)
+        linefrom = None if not linefrom else (int(linefrom) - 1)
+        lineto = None if not lineto else (int(lineto) + 1)
 
         if self.doc.format in ["latex"]:
             file_title = basename.replace("_", "\textunderscore")
@@ -96,8 +96,16 @@ class ListingTable(object):
 
         with open(filename, "r", encoding="utf-8") as f:
             lines = list(f)
-        raw = "".join(lines[linefrom:lineto])
+        if (not linefrom) and (not lineto):
+            raw = "".join(lines)
+        elif linefrom and (not lineto):
+            raw = "".join(lines[linefrom:])
+        elif not linefrom and lineto:
+            raw = "".join(lines[:lineto])
+        else:
+            raw = "".join(lines[linefrom:lineto])
 
+        pf.debug(linefrom, lineto, raw)
         label = basename.lower().replace(".", "_").replace("/", "_") + str(self.counter)
         idn = idn if idn else "lst:{label:s}".format(label=label)
 
