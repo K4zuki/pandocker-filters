@@ -105,7 +105,7 @@ class ListingTable(object):
         else:
             raw = "".join(lines[linefrom:lineto])
 
-        pf.debug(linefrom, lineto, raw)
+        # pf.debug(linefrom, lineto, raw)
         label = basename.lower().replace(".", "_").replace("/", "_") + str(self.counter)
         idn = idn if idn else "lst:{label:s}".format(label=label)
 
