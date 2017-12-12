@@ -10,14 +10,17 @@ requires = ["panflute"]
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
-    version="0.0.4",  # Ideally should be same as your GitHub release tag varsion
+    version="0.0.6",  # Ideally should be same as your GitHub release tag varsion
     description="Yet another set of pandoc filters",
     author="k4zuki",
     author_email="k.yamamoto.08136891@gmail.com",
     url="https://github.com/K4zuki/pandocker-filters",
     install_requires=requires,
     keywords=["pandoc", "markdown"],
-    classifiers=[],
+    classifiers=["Development Status :: 4 - Beta",
+                 "Programming Language :: Python :: 3.5",
+                 "Programming Language :: Python :: 3.6",
+                 ],
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
