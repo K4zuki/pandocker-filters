@@ -7,8 +7,8 @@ setup(
     description="Yet another pandoc filter group",
     author="K4zuki",
     author_email="K4zuki@github.com",
-    url="github package source url",
-    download_url="download link you saved",
+    url="https://github.com/K4zuki/pandocker-filters",
+    download_url="https://github.com/K4zuki/pandocker-filters/archive/0.0.1.tar.gz",
     keywords=["pandoc", "markdown"],
     classifiers=[],
 )
