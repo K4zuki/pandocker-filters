@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+""" listingtable-inline
+inline ListingTable filter which copies pointed external file
+with adding title which is expected to use pandoc-crossref
+"""
+
+import os
+import panflute as pf
+from ListingTable import ListingTable
+
+
+class inline_listingtable(ListingTable):
+
+    def __init__(self):
+        super().__init__()
+
+    def action(self, elem, doc):
+        self.doc = doc
+        if isinstance(elem, (pf.Para)) and len(elem.content) == 1:
+            for subelem in elem.content:
+                if isinstance(subelem, pf.Link) and 'listingtable' in subelem.classes:
+                    self.counter -= 1
+                    fn = subelem.url
+                    options = subelem.attributes
+                    idn = subelem.identifier
+                    caption = subelem.content
+                    pf.debug("[inline] inline listingtable of", fn)
+                    elem = self.listingtable(filename=fn, idn=idn, caption=caption, options=options)
+                    # return ret
+                    # elem = self.listingtable(subelem)
+        return elem
+
+
+def main(doc=None):
+    lt = inline_listingtable()
+    return pf.run_filter(lt.action, doc=doc)
+
+
+if __name__ == '__main__':
+    main()
