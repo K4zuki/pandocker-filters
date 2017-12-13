@@ -15,8 +15,8 @@ from string import Template
 import panflute as pf
 from PIL import Image
 from collections import OrderedDict
-from rotatesvg import rotatesvg
-from BitField import BitField
+from pandoc_pandocker_filters.rotatesvg import rotatesvg
+from pandoc_pandocker_filters.BitField import BitField
 
 # ---------------------------
 # Functions
