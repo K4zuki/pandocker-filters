@@ -10,7 +10,7 @@ requires = ["panflute"]
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
-    version="0.0.6",  # Ideally should be same as your GitHub release tag varsion
+    version="0.0.7",  # Ideally should be same as your GitHub release tag varsion
     description="Yet another set of pandoc filters",
     author="k4zuki",
     author_email="k.yamamoto.08136891@gmail.com",
