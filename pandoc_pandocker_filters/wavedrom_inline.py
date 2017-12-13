@@ -15,7 +15,7 @@ import panflute as pf
 from collections import OrderedDict
 import json
 import yaml
-from BitField import BitField
+from pandoc_pandocker_filters.BitField import BitField
 from shutil import which
 import subprocess
 

@@ -7,7 +7,7 @@ with adding title which is expected to use pandoc-crossref
 
 import os
 import panflute as pf
-from ListingTable import ListingTable
+from pandoc_pandocker_filters.ListingTable import ListingTable
 
 
 class inline_listingtable(ListingTable):
