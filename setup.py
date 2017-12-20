@@ -1,7 +1,7 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
-VERSION = "0.0.10"
+VERSION = "0.0.11"
 """
 from setuptools import setup
 
@@ -29,7 +29,6 @@ setup(
 )
 """
 requires = ["panflute>=1.10.3",
-            "csv",
             "Pillow>=4.2.1",
             "svgutils>=0.2.0",
             "pyyaml>=3.12"
