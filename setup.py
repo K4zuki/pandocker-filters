@@ -1,7 +1,7 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
-requires = ["panflute>=1.10.3", "csv", "Pillow>=4.2.1", "svgutils>=0.2.0", "pyyaml>=3.12"]
+VERSION = "0.0.10"
 """
 from setuptools import setup
 
@@ -28,14 +28,22 @@ setup(
     ],
 )
 """
+requires = ["panflute>=1.10.3",
+            "csv",
+            "Pillow>=4.2.1",
+            "svgutils>=0.2.0",
+            "pyyaml>=3.12"
+            ]
+
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
-    version="0.0.9",  # Ideally should be same as your GitHub release tag varsion
+    version=VERSION,  # Ideally should be same as your GitHub release tag varsion
     description="Yet another set of pandoc filters",
     author="k4zuki",
     author_email="k.yamamoto.08136891@gmail.com",
     url="https://github.com/K4zuki/pandocker-filters",
+    license="MIT",
     install_requires=requires,
     keywords=["pandoc", "markdown"],
     classifiers=["Development Status :: 4 - Beta",
