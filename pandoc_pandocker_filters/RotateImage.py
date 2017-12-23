@@ -64,7 +64,7 @@ class RotateImage(object):
                 self.bf.basename = os.path.splitext(renamed)[0]
                 self.bf.svg2pdf()
                 renamed = self.bf.pdf
-                pf.debug("pdf", self.bf.pdf)
+                # pf.debug("pdf", self.bf.pdf)
 
             filename = renamed
 
