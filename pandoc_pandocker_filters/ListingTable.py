@@ -72,9 +72,10 @@ class ListingTable(object):
         fn = options.get("source")
         idn = element.identifier
         caption = options.get("caption", "")
-        caption = pf.convert_text(caption)[0]
+        if len(caption):
+            caption = pf.convert_text(caption)[0].content
         pf.debug("listingtable of", fn)
-        ret = self.listingtable(filename=fn, idn=idn, caption=caption.content, options=options)
+        ret = self.listingtable(filename=fn, idn=idn, caption=caption, options=options)
         return ret
 
     def listingtable(self, filename, idn, caption, options):
