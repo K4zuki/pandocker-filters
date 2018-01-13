@@ -15,23 +15,16 @@ import panflute as pf
 from collections import OrderedDict
 import json
 import yaml
-from BitField import BitField
+from pandoc_pandocker_filters.BitField import BitField
 from shutil import which
 import subprocess
+from wavedrompy import wavedrom, waveskin
 
 
 class wavedrom_inline(BitField):
 
     def __init__(self):
         super().__init__()
-
-        phantomjs = which("phantomjs")
-        phantomjs_nt = 'bash \'' + phantomjs.replace("/c", "C:").replace(" ", "\ ") + '\''
-        self.phantomjs = phantomjs if self.unix else phantomjs_nt
-
-        wavedrom = which("wavedrom")
-        wavedrom_nt = 'bash \'' + wavedrom.replace("/c", "C:").replace(" ", "\ ") + '\''
-        self.wavedrom = wavedrom if self.unix else wavedrom_nt
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Image) and 'wavedrom' in elem.classes:
@@ -65,20 +58,20 @@ class wavedrom_inline(BitField):
 
     def json2svg(self):
 
-        # /Users/yamamoto/.nodebrew/current/bin/phantomjs
-        # phantomjs /Users/yamamoto/.nodebrew/current/bin/wavedrom -i Out/wave.wavejson -p images/waves/wave.png
-        self.toSVG = [self.phantomjs,
-                      self.wavedrom,
-                      "-i", self.source,
-                      "-s", self.svg
-                      ]
-        # pf.debug(" ".join(self.toSVG))
-        subprocess.call(self.toSVG)
         # with open(self.svg, 'w', encoding='utf-8') as file:
         #     try:
         #         file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
         #     except IOError:
         #         raise
+        output = []
+        with open(self.source, "r") as f:
+            jinput = json.load(f)
+
+        wavedrom.renderWaveForm(0, jinput, output)
+        svg_output = wavedrom.convert_to_svg(output)
+
+        with open(self.svg, "w") as f:
+            f.write(svg_output)
 
 
 def main(doc=None):
