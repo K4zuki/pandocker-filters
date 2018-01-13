@@ -102,3 +102,7 @@ ENV/
 
 svg/
 src/
+tests/svg/
+tests/Out/
+tests/pd-images/
+tests/node_modules/
