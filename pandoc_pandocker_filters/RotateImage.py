@@ -49,7 +49,7 @@ class RotateImage(object):
                 angle = 360 - abs(angle)
             # pf.debug(angle)
 
-            if(ext == ".svg" or ext == ".pdf"):
+            if(ext in [".svg", ".pdf"]):
                 filename = "".join([path, ".svg"])
                 tmp = self.rs.rotate(filename, angle)
                 renamed = "%s_r%+03d%s" % (path, angle, ".svg")
