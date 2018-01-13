@@ -102,6 +102,8 @@ ENV/
 
 svg/
 src/
+tests/images/bitfields/
+tests/images/waves/
 tests/svg/
 tests/Out/
 tests/pd-images/
