@@ -22,11 +22,17 @@ import hashlib
 import datetime
 from shutil import which
 import subprocess
+from svglib.svglib import svg2rlg
+from reportlab.graphics import renderPS, renderPDF, renderPM
 
 
 class BitField(object):
 
     def __init__(self):
+
+        # drawing = svg2rlg("file.svg")
+        # renderPDF.drawToFile(drawing, "file.pdf")
+        # renderPM.drawToFile(drawing, "file.png")
         self.unix = True if (os.name) != "nt" else False
         bitfield = which("bitfield")
         bitfield_nt = "bash \'" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "\'"
@@ -157,7 +163,7 @@ class BitField(object):
         self.lanes = str(options.get("lanes", 1))
         self.bits = str(options.get("bits", 8))
 
-        self.fontfamily = '"' + options.get(fontfamily, source code pro) + '"'
+        self.fontfamily = '"' + options.get(fontfamily, "source code pro") + '"'
         self.fontsize = str(options.get(fontsize, 16))
         self.fontweight = options.get(fontweight, "normal")
 
@@ -244,7 +250,7 @@ class BitField(object):
 
 def main(doc=None):
     bf = BitField()
-    return pf.run_filter(pf.yaml_filter, tag=bitfield, function=bf.generate, doc=doc)
+    return pf.run_filter(pf.yaml_filter, tag="bitfield", function=bf.generate, doc=doc)
 
 
 if __name__ == "__main__":
