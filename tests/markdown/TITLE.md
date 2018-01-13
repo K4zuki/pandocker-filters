@@ -1,6 +1,9 @@
 ```bitfield
 # input: data/bitfields/bit.yaml
 caption: _**block bitfield sample**_
+png: True
+pdf: True
+eps: True
 ---
 # list from LSB
 # bits: bit width
