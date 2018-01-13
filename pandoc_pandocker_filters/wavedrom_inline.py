@@ -27,7 +27,7 @@ class wavedrom_inline(BitField):
         super().__init__()
 
     def action(self, elem, doc):
-        if isinstance(elem, pf.Image) and 'wavedrom' in elem.classes:
+        if isinstance(elem, pf.Image) and "wavedrom" in elem.classes:
             self.doc = doc
             # pf.debug("wavedrom-inline()")
             # pf.debug(elem)
@@ -36,12 +36,12 @@ class wavedrom_inline(BitField):
             options = elem.attributes
             # pf.debug(options)
 
-            with open(fn, 'r', encoding='utf-8') as f:
+            with open(fn, "r", encoding="utf-8") as f:
                 data = f.read()
                 data = self.validatejson(data)
 
             self.get_options(options, data, elem, doc)
-            assert self.source is not None, "mandatory option 'input' is not set"
+            assert self.source is not None, "mandatory option input is not set"
             assert os.path.exists(self.source) == 1, "input file does not exist"
             assert isinstance(self.toPNG, bool), "option png is boolean"
             assert isinstance(self.toPDF, bool), "option pdf is boolean"
@@ -58,9 +58,9 @@ class wavedrom_inline(BitField):
 
     def json2svg(self):
 
-        # with open(self.svg, 'w', encoding='utf-8') as file:
+        # with open(self.svg, "w", encoding="utf-8") as file:
         #     try:
-        #         file.write(pf.shell(" ".join(self.toSVG)).decode('utf-8'))
+        #         file.write(pf.shell(" ".join(self.toSVG)).decode("utf-8"))
         #     except IOError:
         #         raise
         output = []
@@ -79,5 +79,5 @@ def main(doc=None):
     return pf.run_filter(wd.action, doc=doc)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

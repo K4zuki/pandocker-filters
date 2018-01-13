@@ -78,7 +78,7 @@ class RotateImage(object):
 
     def figure(self, options, data, element, doc):
 
-        # pf.debug(doc.get_metadata('include', 'no hoge'))
+        # pf.debug(doc.get_metadata("include", "no hoge"))
         # pf.debug(element.attributes)
         # pf.debug(element.parent)
         # pf.debug("prev", element.prev)
@@ -87,21 +87,21 @@ class RotateImage(object):
         # Para(
         #     Image(
         #         Strong(Str(caption));
-        #         url='../images/front-image.png',
-        #         title='fig:',
-        #         attributes=OrderedDict([('width', '50%')])
+        #         url="../images/front-image.png",
+        #         title="fig:",
+        #         attributes=OrderedDict([("width", "50%")])
         #     )
         # )
 
         # Get options
-        fn = options.get('source')
+        fn = options.get("source")
         pf.debug("rotate image of", fn)
-        fn = os.path.abspath(fn).replace('\\', '/')
-        title = options.get('title', 'fig:')
-        caption = options.get('caption')
-        label = options.get('label', os.path.splitext(os.path.basename(fn))[0])
-        angle = options.get('angle', 0)
-        attr = options.get('attr', {})
+        fn = os.path.abspath(fn).replace("\\", "/")
+        title = options.get("title", "fig:")
+        caption = options.get("caption")
+        label = options.get("label", os.path.splitext(os.path.basename(fn))[0])
+        angle = options.get("angle", 0)
+        attr = options.get("attr", {})
 
         # pf.debug(attr)
 
@@ -130,7 +130,7 @@ class RotateImage(object):
 
 def main(doc=None):
     ri = RotateImage()
-    return pf.run_filter(pf.yaml_filter, tag='rotate', function=ri.figure,
+    return pf.run_filter(pf.yaml_filter, tag="rotate", function=ri.figure,
                          doc=doc)
 
 

@@ -29,7 +29,7 @@ class BitField(object):
     def __init__(self):
         self.unix = True if (os.name) != "nt" else False
         bitfield = which("bitfield")
-        bitfield_nt = 'bash \'' + bitfield.replace("/c", "C:").replace(" ", "\ ") + '\''
+        bitfield_nt = "bash \'" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "\'"
         self.bitfield = bitfield if self.unix else bitfield_nt
         self.counter = 0
         self.pdfconvert = None
@@ -43,8 +43,8 @@ class BitField(object):
         else:
             svg2png = which("svg2png")
             svg2pdf = which("svg2pdf")
-            self.pdfconvert = 'bash \'' + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + '\''
-            self.pngconvert = 'bash \'' + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + '\''
+            self.pdfconvert = "bash \'" + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + "\'"
+            self.pngconvert = "bash \'" + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + "\'"
             pf.debug("non-UNIX OS!")
         self.defaultdir_to = "svg"
         self.svg = ""
@@ -68,7 +68,7 @@ class BitField(object):
                       ]
         # pf.debug(" ".join(self.toSVG))
         if not os.path.exists(self.svg):
-            with open(self.svg, 'w', encoding='utf-8') as file:
+            with open(self.svg, "w", encoding="utf-8") as file:
                 try:
                     subprocess.call(" ".join(self.toSVG), shell=True)
                 except IOError:
@@ -91,7 +91,7 @@ class BitField(object):
         else:
             linkto = self.png
 
-        self.linkto = os.path.abspath(linkto).replace('\\', '/')
+        self.linkto = os.path.abspath(linkto).replace("\\", "/")
 
     def svg2png(self):
         output = [self.pngconvert, self.svg]
@@ -150,19 +150,19 @@ class BitField(object):
         self.doc = doc
 
         # pf.debug("get_options()")
-        self.source = options.get('input')
+        self.source = options.get("input")
 
-        self.vspace = str(options.get('lane-height', 80))
-        self.hspace = str(options.get('lane-width', 640))
-        self.lanes = str(options.get('lanes', 1))
-        self.bits = str(options.get('bits', 8))
+        self.vspace = str(options.get("lane-height", 80))
+        self.hspace = str(options.get("lane-width", 640))
+        self.lanes = str(options.get("lanes", 1))
+        self.bits = str(options.get("bits", 8))
 
-        self.fontfamily = '"' + options.get('fontfamily', 'source code pro') + '"'
-        self.fontsize = str(options.get('fontsize', 16))
-        self.fontweight = options.get('fontweight', "normal")
+        self.fontfamily = '"' + options.get(fontfamily, source code pro) + '"'
+        self.fontsize = str(options.get(fontsize, 16))
+        self.fontweight = options.get(fontweight, "normal")
 
-        self.caption = options.get('caption', "Untitled")
-        self.dir_to = options.get('directory', self.defaultdir_to)
+        self.caption = options.get(caption, "Untitled")
+        self.dir_to = options.get(directory, self.defaultdir_to)
 
         if os.path.exists(self.dir_to) != 1:
             os.mkdir(self.dir_to)
@@ -171,22 +171,22 @@ class BitField(object):
             # pf.debug("not source and data is not None")
             data = self.validatejson(data)
         else:  # source and data is "dont care"
-            data = self.validatejson(open(self.source, "r", encoding='utf-8').read())
+            data = self.validatejson(open(self.source, "r", encoding=utf - 8).read())
 
-        self.counter = hashlib.sha1(data.encode('utf-8')).hexdigest()[:8]
+        self.counter = hashlib.sha1(data.encode(utf - 8)).hexdigest()[:8]
         self.basename = "/".join([self.dir_to,
                                   str(self.counter)])
 
         self.source = ".".join([self.basename, "json"])
-        open(self.source, "w", encoding='utf-8').write(data)
+        open(self.source, "w", encoding=utf - 8).write(data)
 
-        self.attr = options.get('attr', {})
-        self.title = options.get('title', "fig:")
-        self.label = options.get('label', os.path.splitext(os.path.basename(self.source))[0])
+        self.attr = options.get(attr, {})
+        self.title = options.get(title, "fig:")
+        self.label = options.get(label, os.path.splitext(os.path.basename(self.source))[0])
 
-        self.toPNG = options.get('png', True)
-        self.toEPS = options.get('eps', False) if self.unix else False
-        self.toPDF = True if doc.format in ["latex"] else options.get('pdf', False)
+        self.toPNG = options.get(png, True)
+        self.toEPS = options.get(eps, False) if self.unix else False
+        self.toPDF = True if doc.format in ["latex"] else options.get(pdf, False)
 
         self.svg = ".".join([self.basename, "svg"])
 
@@ -208,7 +208,7 @@ class BitField(object):
 
         self.get_options(options, data, element, doc)
 
-        assert self.source is not None, "mandatory option 'input' is not set"
+        assert self.source is not None, "mandatory option input is not set"
         assert os.path.exists(self.source) == 1, "input file does not exist"
         assert isinstance(self.toPNG, bool), "option png is boolean"
         assert isinstance(self.toPDF, bool), "option pdf is boolean"
@@ -244,7 +244,7 @@ class BitField(object):
 
 def main(doc=None):
     bf = BitField()
-    return pf.run_filter(pf.yaml_filter, tag='bitfield', function=bf.generate, doc=doc)
+    return pf.run_filter(pf.yaml_filter, tag=bitfield, function=bf.generate, doc=doc)
 
 
 if __name__ == "__main__":

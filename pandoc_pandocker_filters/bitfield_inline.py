@@ -24,7 +24,7 @@ class inline_bitfield(BitField):
         super().__init__()
 
     def action(self, elem, doc):
-        if isinstance(elem, pf.Image) and 'bitfield' in elem.classes:
+        if isinstance(elem, pf.Image) and "bitfield" in elem.classes:
             self.doc = doc
             # pf.debug("bitfield_inline()")
             # pf.debug(elem)
@@ -33,12 +33,12 @@ class inline_bitfield(BitField):
             options = elem.attributes
             # pf.debug(options)
 
-            with open(fn, 'r', encoding='utf-8') as f:
+            with open(fn, "r", encoding="utf-8") as f:
                 data = f.read()
                 data = self.validatejson(data)
 
             self.get_options(options, data, elem, doc)
-            assert self.source is not None, "mandatory option 'input' is not set"
+            assert self.source is not None, "mandatory option input is not set"
             assert os.path.exists(self.source) == 1, "input file does not exist"
             assert isinstance(self.toPNG, bool), "option png is boolean"
             assert isinstance(self.toPDF, bool), "option pdf is boolean"
@@ -59,5 +59,5 @@ def main(doc=None):
     return pf.run_filter(bf.action, doc=doc)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

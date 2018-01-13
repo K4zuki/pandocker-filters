@@ -19,7 +19,7 @@ class inline_listingtable(ListingTable):
         self.doc = doc
         if isinstance(elem, (pf.Para)) and len(elem.content) == 1:
             for subelem in elem.content:
-                if isinstance(subelem, pf.Link) and 'listingtable' in subelem.classes:
+                if isinstance(subelem, pf.Link) and "listingtable" in subelem.classes:
                     self.counter -= 1
                     fn = subelem.url
                     options = subelem.attributes
@@ -38,5 +38,5 @@ def main(doc=None):
     return pf.run_filter(lt.action, doc=doc)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
