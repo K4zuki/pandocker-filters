@@ -163,12 +163,12 @@ class BitField(object):
         self.lanes = str(options.get("lanes", 1))
         self.bits = str(options.get("bits", 8))
 
-        self.fontfamily = '"' + options.get(fontfamily, "source code pro") + '"'
-        self.fontsize = str(options.get(fontsize, 16))
+        self.fontfamily = '"' + options.get("fontfamily", "source code pro") + '"'
+        self.fontsize = str(options.get("fontsize", 16))
         self.fontweight = options.get(fontweight, "normal")
 
-        self.caption = options.get(caption, "Untitled")
-        self.dir_to = options.get(directory, self.defaultdir_to)
+        self.caption = options.get("caption", "Untitled")
+        self.dir_to = options.get("directory", self.defaultdir_to)
 
         if os.path.exists(self.dir_to) != 1:
             os.mkdir(self.dir_to)
