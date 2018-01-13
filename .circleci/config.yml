@@ -9,13 +9,11 @@ jobs:
           name: pip install from local
           command: pip3 install --no-cache-dir -U .
       - run:
-          name: cd to test directory
+          name: Make HTML
           command: |
             cd tests
             ls
-      # - run:
-      #     name: Make HTML
-      #     command: make initdir html
+            make initdir html
       # - run:
       #     name: Deploy preparation
       #     command: |
