@@ -31,7 +31,8 @@ setup(
 requires = ["panflute>=1.10.3",
             "Pillow>=4.2.1",
             "svgutils>=0.2.0",
-            "pyyaml>=3.12"
+            "pyyaml>=3.12",
+            "svglib"
             ]
 
 VERSION = "0.0.4"
