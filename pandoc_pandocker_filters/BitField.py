@@ -30,9 +30,6 @@ class BitField(object):
 
     def __init__(self):
 
-        # drawing = svg2rlg("file.svg")
-        # renderPDF.drawToFile(drawing, "file.pdf")
-        # renderPM.drawToFile(drawing, "file.png")
         self.unix = True if (os.name) != "nt" else False
         bitfield = which("bitfield")
         bitfield_nt = "bash \'" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "\'"
@@ -81,14 +78,15 @@ class BitField(object):
                     raise
 
     def svg2image(self):
+        drawing = svg2rlg(self.svg)
         if(self.toPDF):
-            self.svg2pdf()
+            self.svg2pdf(self.svg, drawing)
 
         if(self.toPNG):
-            self.svg2png()
+            self.svg2png(self.svg, drawing)
 
         if(self.toEPS):
-            self.svg2eps()
+            self.svg2eps(self.svg, drawing)
 
         if self.doc.format in ["latex"]:
             linkto = self.pdf
@@ -99,43 +97,46 @@ class BitField(object):
 
         self.linkto = os.path.abspath(linkto).replace("\\", "/")
 
-    def svg2png(self):
-        output = [self.pngconvert, self.svg]
+    def svg2png(self, drawing):
+        # output = [self.pngconvert, self.svg]
         self.png = ".".join([str(self.basename), "png"])
-        if self.unix:
-            output.append("--format=png")
-        output.append("--output")
-        output.append(self.png)
+        # if self.unix:
+        #     output.append("--format=png")
+        # output.append("--output")
+        # output.append(self.png)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.png):
-            subprocess.call(" ".join(output), shell=True)
+            renderPM.drawToFile(drawing, self.png)
+            # subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.png)
 
-    def svg2pdf(self):
-        output = [self.pdfconvert, self.svg]
+    def svg2pdf(self, drawing):
+        # output = [self.pdfconvert, self.svg]
         self.pdf = ".".join([str(self.basename), "pdf"])
-        if self.unix:
-            output.append("--format=pdf")
-        output.append("--output")
-        output.append(self.pdf)
+        # if self.unix:
+        #     output.append("--format=pdf")
+        # output.append("--output")
+        # output.append(self.pdf)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.pdf):
-            subprocess.call(" ".join(output), shell=True)
+            renderPDF.drawToFile(drawing, self.pdf)
+            # subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.pdf)
 
-    def svg2eps(self):
+    def svg2eps(self, drawing):
         self.eps = ".".join([self.basename, "eps"])
-        output = [self.epsconvert,
-                  self.svg,
-                  "--format=eps",
-                  "--output",
-                  self.eps
-                  ]
+        # output = [self.epsconvert,
+        #           self.svg,
+        #           "--format=eps",
+        #           "--output",
+        #           self.eps
+        #           ]
         # pf.debug(" ".join(output))
         if not os.path.exists(self.eps):
-            pf.shell(" ".join(output))
+            renderPS.drawToFile(drawing, self.eps)
+            # pf.shell(" ".join(output))
         else:
             pf.debug("bypass conversion as output exists:", self.eps)
 
