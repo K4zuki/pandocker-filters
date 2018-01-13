@@ -80,13 +80,13 @@ class BitField(object):
     def svg2image(self):
         drawing = svg2rlg(self.svg)
         if(self.toPDF):
-            self.svg2pdf(self.svg, drawing)
+            self.svg2pdf(drawing)
 
         if(self.toPNG):
-            self.svg2png(self.svg, drawing)
+            self.svg2png(drawing)
 
         if(self.toEPS):
-            self.svg2eps(self.svg, drawing)
+            self.svg2eps(drawing)
 
         if self.doc.format in ["latex"]:
             linkto = self.pdf
@@ -166,7 +166,7 @@ class BitField(object):
 
         self.fontfamily = '"' + options.get("fontfamily", "source code pro") + '"'
         self.fontsize = str(options.get("fontsize", 16))
-        self.fontweight = options.get(fontweight, "normal")
+        self.fontweight = options.get("fontweight", "normal")
 
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
@@ -178,22 +178,22 @@ class BitField(object):
             # pf.debug("not source and data is not None")
             data = self.validatejson(data)
         else:  # source and data is "dont care"
-            data = self.validatejson(open(self.source, "r", encoding=utf - 8).read())
+            data = self.validatejson(open(self.source, "r", encoding="utf-8").read())
 
-        self.counter = hashlib.sha1(data.encode(utf - 8)).hexdigest()[:8]
+        self.counter = hashlib.sha1(data.encode("utf-8")).hexdigest()[:8]
         self.basename = "/".join([self.dir_to,
                                   str(self.counter)])
 
         self.source = ".".join([self.basename, "json"])
-        open(self.source, "w", encoding=utf - 8).write(data)
+        open(self.source, "w", encoding="utf-8").write(data)
 
-        self.attr = options.get(attr, {})
-        self.title = options.get(title, "fig:")
-        self.label = options.get(label, os.path.splitext(os.path.basename(self.source))[0])
+        self.attr = options.get("attr", {})
+        self.title = options.get("title", "fig:")
+        self.label = options.get("label", os.path.splitext(os.path.basename(self.source))[0])
 
-        self.toPNG = options.get(png, True)
-        self.toEPS = options.get(eps, False) if self.unix else False
-        self.toPDF = True if doc.format in ["latex"] else options.get(pdf, False)
+        self.toPNG = bool(options.get("png", True))
+        self.toEPS = bool(options.get("eps", False))
+        self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
 
         self.svg = ".".join([self.basename, "svg"])
 
