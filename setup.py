@@ -29,7 +29,7 @@ setup(
 )
 """
 requires = ["panflute>=1.10.3",
-            "Pillow>=4.2.1",
+            "Pillow>=4.2.1,<5.0",
             "svgutils>=0.2.0",
             "pyyaml>=3.12",
             "svglib"
