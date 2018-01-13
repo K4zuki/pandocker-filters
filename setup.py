@@ -1,11 +1,38 @@
 # Always prefer setuptools over distutils
-from setuptools import find_packages
-# To use a consistent encoding
-from codecs import open
-from os import path
-from distutils.core import setup
+from setuptools import setup, find_packages
 
-requires = ["panflute", "aafigure", "svgutils", "reportlab"]
+VERSION = "0.0.14"
+"""
+from setuptools import setup
+
+
+requires = ["requests>=2.14.2"]
+
+
+setup(
+    name="your_package",
+    version="0.1",
+    description="Awesome library",
+    url="https://github.com/whatever/whatever",
+    author="yourname",
+    author_email="your@address.com",
+    license="MIT",
+    keywords="sample setuptools development",
+    packages=[
+        "your_package",
+        "your_package.subpackage",
+    ],
+    install_requires=requires,
+    classifiers=[
+        "Programming Language :: Python :: 3.6",
+    ],
+)
+"""
+requires = ["panflute>=1.10.3",
+            "Pillow>=4.2.1",
+            "svgutils>=0.2.0",
+            "pyyaml>=3.12"
+            ]
 
 VERSION = "0.0.4"
 setup(
@@ -16,9 +43,14 @@ setup(
     author="k4zuki",
     author_email="k.yamamoto.08136891@gmail.com",
     url="https://github.com/K4zuki/pandocker-filters",
+    license="MIT",
     install_requires=requires,
     keywords=["pandoc", "markdown"],
-    classifiers=[],
+    classifiers=["Development Status :: 4 - Beta",
+                 "Programming Language :: Python :: 3.5",
+                 "Programming Language :: Python :: 3.6",
+                 ],
+    python_requires=">=3.5,!=3.0.*,!=3.1.*,!=3.2.*",
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.

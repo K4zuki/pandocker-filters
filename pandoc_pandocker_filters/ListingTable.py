@@ -72,11 +72,18 @@ class ListingTable(object):
         fn = options.get("source")
         idn = element.identifier
         caption = options.get("caption", "")
+        if len(caption):
+            caption = pf.convert_text(caption)[0].content
         pf.debug("listingtable of", fn)
         ret = self.listingtable(filename=fn, idn=idn, caption=caption, options=options)
         return ret
 
     def listingtable(self, filename, idn, caption, options):
+        if self.doc.format in ["latex"]:
+            for c in caption:
+                if isinstance(c, (pf.Str)):
+                    c.text = c.text.replace("_", "\\textunderscore ")
+                    # pf.debug(c.text)
         basename = os.path.basename(filename)
         file_type = options.get("type", "plain")
         types = [file_type, "numberLines"]

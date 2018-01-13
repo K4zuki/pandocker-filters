@@ -8,7 +8,7 @@ import io
 import csv
 import panflute as pf
 import codecs
-from RotateImage import RotateImage
+from pandoc_pandocker_filters.RotateImage import RotateImage
 
 
 class rotateimage_inline(RotateImage):

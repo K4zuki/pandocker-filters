@@ -15,8 +15,8 @@ from string import Template
 import panflute as pf
 from PIL import Image
 from collections import OrderedDict
-from rotatesvg import rotatesvg
-from BitField import BitField
+from pandoc_pandocker_filters.rotatesvg import rotatesvg
+from pandoc_pandocker_filters.BitField import BitField
 
 # ---------------------------
 # Functions
@@ -64,7 +64,7 @@ class RotateImage(object):
                 self.bf.basename = os.path.splitext(renamed)[0]
                 self.bf.svg2pdf()
                 renamed = self.bf.pdf
-                pf.debug("pdf", self.bf.pdf)
+                # pf.debug("pdf", self.bf.pdf)
 
             filename = renamed
 
