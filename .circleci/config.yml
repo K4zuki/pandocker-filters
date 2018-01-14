@@ -27,4 +27,4 @@ jobs:
       #     command: ghr -replace -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME build-`git rev-parse --short HEAD` test/svg/
 notify:
   webhooks:
-    - url: https://registry.hub.docker.com/u/k4zuki/pandocker-base/trigger/a4d25fa4-bc9b-40b4-92e8-da2a1f8fc9d7/
+    - url: $PANDOCKER_HOOK_URL
