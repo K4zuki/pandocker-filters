@@ -42,6 +42,10 @@ ref to [@lst:inline-listingtable]
 
 [inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True}
 
+[other inline wavedrom sample by hyperlink](data/waves/anotherwave.yaml){.wavedrom png=True pdf=True eps=True}
+
+[another inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True}
+
 [inline wavedrom rotation sample 45degree by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True .rotate angle=45}
 
 ![inline wavedrom rotation sample 30degree](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True .rotate angle=30}
