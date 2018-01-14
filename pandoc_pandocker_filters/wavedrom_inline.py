@@ -27,6 +27,36 @@ class wavedrom_inline(BitField):
         super().__init__()
 
     def action(self, elem, doc):
+        self.doc = doc
+        if isinstance(elem, pf.Link) and "wavedrom" in elem.classes:
+
+            fn = elem.url
+            options = elem.attributes
+            idn = elem.identifier
+            caption = elem.content
+            with open(fn, "r", encoding="utf-8") as f:
+                data = f.read()
+                data = self.validatejson(data)
+
+            self.get_options(options, data, elem, doc)
+            assert self.source is not None, "mandatory option input is not set"
+            assert os.path.exists(self.source) == 1, "input file does not exist"
+            assert isinstance(self.toPNG, bool), "option png is boolean"
+            assert isinstance(self.toPDF, bool), "option pdf is boolean"
+            assert isinstance(self.toEPS, bool), "option eps is boolean"
+
+            self.json2svg()
+            self.svg2image()
+
+            pf.debug("[inline] generate wavedrom from", self.linkto)
+            # pf.debug(elem)
+            elem.classes.remove("wavedrom")
+            elem = pf.Image(*caption, classes=elem.classes, url=self.linkto,
+                            identifier=idn, title="fig:", attributes=elem.attributes)
+            # pf.debug(elem)
+
+            return elem
+
         if isinstance(elem, pf.Image) and "wavedrom" in elem.classes:
             self.doc = doc
             # pf.debug("wavedrom-inline()")
