@@ -35,7 +35,7 @@ requires = ["panflute>=1.10.3",
             "svglib"
             ]
 
-VERSION = "0.0.15"
+VERSION = "0.0.16"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
