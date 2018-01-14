@@ -97,8 +97,9 @@ class wavedrom_inline(BitField):
         with open(self.source, "r") as f:
             jinput = json.load(f)
 
-        wavedrom.renderWaveForm(0, jinput, output)
-        svg_output = wavedrom.convert_to_svg(output)
+        wd = wavedrom.WaveDrom()
+        wd.renderWaveForm(0, jinput, output)
+        svg_output = wd.convert_to_svg(output)
 
         with open(self.svg, "w") as f:
             f.write(svg_output)
