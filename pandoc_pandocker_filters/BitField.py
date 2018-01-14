@@ -189,6 +189,7 @@ class BitField(object):
 
         self.attr = options.get("attr", {})
         self.title = options.get("title", "fig:")
+        self.identifier = element.identifier
         self.label = options.get("label", os.path.splitext(os.path.basename(self.source))[0])
 
         self.toPNG = bool(options.get("png", True))
@@ -241,7 +242,10 @@ class BitField(object):
         # pf.debug(label)
         # pf.debug(attr)
         pf.debug("generate bitfield from", self.linkto)
-        img = pf.Image(*caption, url=self.linkto, title=title_text, attributes=attr)
+        # img = pf.Image(*caption, url=self.linkto, identifier=elem.identifier, title="fig:", attributes=attr)
+        element.classes.remove("bitfield")
+        img = pf.Image(*caption, classes=element.classes, url=self.linkto,
+                       identifier=element.identifier, title="fig:", attributes=element.attributes)
         # pf.debug(img)
         ans = pf.Para(img)
         # pf.debug(ans)
