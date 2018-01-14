@@ -42,11 +42,17 @@ ref to [@lst:inline-listingtable]
 
 [inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True}
 
+[返却パケット](data/waves/commandSandP_wo_ret.yaml){.wavedrom}
+
+[_8bit_ スレーブアドレス0x80に4バイト書込む コマンドパケット例](data/waves/commandSandP_wo.yaml){.wavedrom}
+
+[該当するI^2^Cバスの動き](data/waves/commandSandP_wo_bus.yaml){.wavedrom}
+
 [other inline wavedrom sample by hyperlink](data/waves/anotherwave.yaml){.wavedrom png=True pdf=True eps=True}
 
 [another inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True}
 
-[inline wavedrom rotation sample 45degree by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True .rotate angle=45}
+[inline wavedrom rotation sample 45degree by hyperlink](data/waves/commandSandP_wo_bus.yaml){.wavedrom png=True pdf=True eps=True .rotate angle=45}
 
 ![inline wavedrom rotation sample 30degree](data/waves/wave.yaml){.wavedrom png=True pdf=True eps=True .rotate angle=30}
 
