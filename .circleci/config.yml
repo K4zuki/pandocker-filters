@@ -7,7 +7,9 @@ jobs:
       - checkout
       - run:
           name: pip install from local
-          command: pip3 install --no-cache-dir -U .
+          command: |
+            pip3 install git+https://github.com/K4zuki/wavedrompy.git
+            pip3 install -U .
       - run:
           name: Make HTML
           command: |
