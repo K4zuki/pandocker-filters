@@ -18,7 +18,6 @@ import yaml
 from pandoc_pandocker_filters.BitField import BitField
 from shutil import which
 import subprocess
-from wavedrompy import wavedrom, waveskin
 
 
 class wavedrom_inline(BitField):
@@ -26,8 +25,15 @@ class wavedrom_inline(BitField):
     def __init__(self):
         super().__init__()
 
+        phantomjs = which("phantomjs")
+        phantomjs_nt = "bash \'" + phantomjs.replace("/c", "C:").replace(" ", "\ ") + "\'"
+        self.phantomjs = phantomjs if self.unix else phantomjs_nt
+
+        wavedrom = which("wavedrom")
+        wavedrom_nt = "bash \'" + wavedrom.replace("/c", "C:").replace(" ", "\ ") + "\'"
+        self.wavedrom = wavedrom if self.unix else wavedrom_nt
+
     def action(self, elem, doc):
-        self.doc = doc
         if isinstance(elem, pf.Link) and "wavedrom" in elem.classes:
 
             fn = elem.url
@@ -58,51 +64,29 @@ class wavedrom_inline(BitField):
             return elem
 
         if isinstance(elem, pf.Image) and "wavedrom" in elem.classes:
-            self.doc = doc
-            # pf.debug("wavedrom-inline()")
-            # pf.debug(elem)
-            fn = elem.url
-            # pf.debug(fn)
-            options = elem.attributes
-            # pf.debug(options)
-
-            with open(fn, "r", encoding="utf-8") as f:
-                data = f.read()
-                data = self.validatejson(data)
-
-            self.get_options(options, data, elem, doc)
-            assert self.source is not None, "mandatory option input is not set"
-            assert os.path.exists(self.source) == 1, "input file does not exist"
-            assert isinstance(self.toPNG, bool), "option png is boolean"
-            assert isinstance(self.toPDF, bool), "option pdf is boolean"
-            assert isinstance(self.toEPS, bool), "option eps is boolean"
-
-            self.json2svg()
-            self.svg2image()
-
-            elem.url = self.linkto
-            pf.debug("[inline] generate wavedrom from", self.linkto)
-
-            # return []
-            return elem
+            pf.debug("")
+            pf.debug("inline wavedrom in image link syntax detected but obsolete.")
+            pf.debug("use hyperlink syntax from now; just remove ! in front.")
+            pf.debug("removing for safety")
+            pf.debug("")
+            return []
 
     def json2svg(self):
 
+        # /Users/yamamoto/.nodebrew/current/bin/phantomjs
+        # phantomjs /Users/yamamoto/.nodebrew/current/bin/wavedrom -i Out/wave.wavejson -p images/waves/wave.png
+        self.toSVG = [self.phantomjs,
+                      self.wavedrom,
+                      "-i", self.source,
+                      "-s", self.svg
+                      ]
+        # pf.debug(" ".join(self.toSVG))
+        subprocess.call(self.toSVG)
         # with open(self.svg, "w", encoding="utf-8") as file:
         #     try:
         #         file.write(pf.shell(" ".join(self.toSVG)).decode("utf-8"))
         #     except IOError:
         #         raise
-        output = []
-        with open(self.source, "r") as f:
-            jinput = json.load(f)
-
-        wd = wavedrom.WaveDrom()
-        wd.renderWaveForm(0, jinput, output)
-        svg_output = wd.convert_to_svg(output)
-
-        with open(self.svg, "w") as f:
-            f.write(svg_output)
 
 
 def main(doc=None):
