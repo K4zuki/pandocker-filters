@@ -22,8 +22,6 @@ import hashlib
 import datetime
 from shutil import which
 import subprocess
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPS, renderPDF, renderPM
 
 
 class BitField(object):
@@ -105,8 +103,6 @@ class BitField(object):
         output.append(self.png)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.png):
-            # cairosvg.svg2png(url=self.svg, write_to=self.png)
-            # renderPM.drawToFile(drawing, self.png)
             subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.png)
@@ -120,15 +116,11 @@ class BitField(object):
         output.append(self.pdf)
         # pf.debug(" ".join(output))
         if not os.path.exists(self.pdf):
-            # cairosvg.svg2pdf(url=self.svg, write_to=self.pdf)
-            # renderPDF.drawToFile(drawing, self.pdf)
             subprocess.call(" ".join(output), shell=True)
         else:
             pf.debug("bypass conversion as output exists:", self.pdf)
 
     def svg2eps(self):
-        # output = cairosvg.svg2ps(
-        #     bytestring=open("/path/to/input.svg").read().encode('utf-8'))
         self.eps = ".".join([self.basename, "eps"])
         output = [self.epsconvert,
                   self.svg,
