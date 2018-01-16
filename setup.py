@@ -1,7 +1,6 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
-VERSION = "0.0.14"
 """
 from setuptools import setup
 
@@ -31,10 +30,11 @@ setup(
 requires = ["panflute>=1.10.3",
             "Pillow>=4.2.1,<5.0",
             "svgutils>=0.2.0",
-            "svglib"
+            "svglib",
+            "aafigure",
             ]
 
-VERSION = "0.0.17"
+VERSION = "0.0.18"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
@@ -63,7 +63,7 @@ setup(
             "pandocker-wavedrom-inline = pandoc_pandocker_filters.wavedrom_inline:main",
             "pandocker-rotateimage = pandoc_pandocker_filters.RotateImage:main",
             "pandocker-rotateimage-inline = pandoc_pandocker_filters.rotateimage_inline:main",
-            # "pandocker-aafigure = pandoc_pandocker_filters.AAFigure:main",
+            "pandocker-aafigure = pandoc_pandocker_filters.AAFigure:main",
             # "pandocker-aafigure-inline = pandoc_pandocker_filters.aafigure_inline:main",
         ],
     },

@@ -1,9 +1,36 @@
+```{.aafigure #fig:block-aafigure}
+# input: data/bitfields/bit.yaml
+caption: _**block aafigure sample**_
+png: True
+pdf: True
+---
+
+  ---- |         ___  ~~~|
+       | --  ___|        |    ===
+                         ~~~
+
+                                     +
+      |  -  +   |  -  +   |  -  +   /               -
+     /  /  /   /  /  /   /  /  /   /     --     |/| /    +
+    |  |  |   +  +  +   -  -  -   /     /  \        -   \|/  |\
+                                 +     +    +          +-+-+ | +
+    |  |  |   +  +  +   -  -  -   \     \  /        -   /|\  |/
+     \  \  \   \  \  \   \  \  \   \     --     |\| \    +
+      |  -  +   |  -  +   |  -  +   \               -
+                                     +
+
+    --->   | | | | | |
+    ---<   | | | | | |
+    ---o   ^ V v o O #
+    ---O
+    ---#
+```
+
 ```{.bitfield #fig:block-bitfield}
 # input: data/bitfields/bit.yaml
 caption: _**block bitfield sample**_
 png: True
 pdf: True
-eps: True
 ---
 # list from LSB
 # bits: bit width
