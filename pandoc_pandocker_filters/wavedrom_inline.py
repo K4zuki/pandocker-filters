@@ -64,11 +64,11 @@ class wavedrom_inline(BitField):
             return elem
 
         if isinstance(elem, pf.Image) and "wavedrom" in elem.classes:
-            pf.debug("")
-            pf.debug("inline wavedrom in image link syntax detected but obsolete.")
-            pf.debug("use hyperlink syntax from now; just remove ! in front.")
-            pf.debug("removing for safety")
-            pf.debug("")
+            pf.debug("#")
+            pf.debug("# Inline wavedrom in image link syntax, which is *obsolete*, is detected.")
+            pf.debug("# Use hyperlink syntax from now - Just remove ! in front.")
+            pf.debug("# Removing link for safety.")
+            pf.debug("#")
             return []
 
     def json2svg(self):
