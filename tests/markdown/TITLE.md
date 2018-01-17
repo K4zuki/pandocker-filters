@@ -4,6 +4,9 @@ caption: _**block aafigure sample**_
 png: True
 pdf: True
 ---
+A   B
+ AA   BB
+ AA   BB
 
   ---- |         ___  ~~~|
        | --  ___|        |    ===
@@ -25,6 +28,8 @@ pdf: True
     ---O
     ---#
 ```
+
+[inline aafigure sample](data/aafigure.txt){.aafigure}
 
 ```{.bitfield #fig:block-bitfield}
 # input: data/bitfields/bit.yaml

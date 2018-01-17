@@ -34,7 +34,7 @@ requires = ["panflute>=1.10.3",
             "aafigure",
             ]
 
-VERSION = "0.0.18"
+VERSION = "0.0.19"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
@@ -64,7 +64,7 @@ setup(
             "pandocker-rotateimage = pandoc_pandocker_filters.RotateImage:main",
             "pandocker-rotateimage-inline = pandoc_pandocker_filters.rotateimage_inline:main",
             "pandocker-aafigure = pandoc_pandocker_filters.AAFigure:main",
-            # "pandocker-aafigure-inline = pandoc_pandocker_filters.aafigure_inline:main",
+            "pandocker-aafigure-inline = pandoc_pandocker_filters.aafigure_inline:main",
         ],
     },
 )

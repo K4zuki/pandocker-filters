@@ -26,6 +26,7 @@ class AAFigure(object):
     def __init__(self):
         self.defaultdir_to = "svg"
         self.doc = ""
+        self.render_message = ""
 
     def render(self, options, data, element, doc):
         self.doc = doc
@@ -79,7 +80,9 @@ class AAFigure(object):
         caption = caption[0]
         caption = caption.content
 
-        pf.debug("generate aafigure from", linkto)
+        render_message = "generate aafigure from" + linkto
+        self.render_message = render_message if not self.render_message else self.render_message + linkto
+        pf.debug(self.render_message)
         element.classes.remove("aafigure")
         img = pf.Image(*caption, classes=element.classes, url=linkto,
                        identifier=element.identifier, title="fig:", attributes=element.attributes)
