@@ -31,9 +31,9 @@ class AAFigure(object):
     def render(self, options, data, element, doc):
         self.doc = doc
         self.source = options.get("input")
-        self.toPNG = options.get("png", True)
-        self.toSVG = options.get("svg", False)
-        self.toPDF = options.get("pdf", False)
+        self.toPNG = bool(options.get("png", True))
+        self.toSVG = bool(options.get("svg", False))
+        self.toPDF = bool(options.get("pdf", False))
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
 
@@ -82,7 +82,7 @@ class AAFigure(object):
 
         render_message = "generate aafigure from" + linkto
         self.render_message = render_message if not self.render_message else self.render_message + linkto
-        pf.debug(self.render_message)
+        # pf.debug(self.render_message)
         element.classes.remove("aafigure")
         img = pf.Image(*caption, classes=element.classes, url=linkto,
                        identifier=element.identifier, title="fig:", attributes=element.attributes)
