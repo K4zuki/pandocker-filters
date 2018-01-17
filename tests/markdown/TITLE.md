@@ -29,7 +29,7 @@ A   B
     ---#
 ```
 
-[inline aafigure sample](data/aafigure.txt){.aafigure}
+[inline aafigure sample](data/aafigure.txt){.aafigure png=True pdf=True eps=True}
 
 ```{.bitfield #fig:block-bitfield}
 # input: data/bitfields/bit.yaml
