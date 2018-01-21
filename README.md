@@ -13,8 +13,10 @@ or
 `pip install pandoc-pandocker-filters`
 
 # Syntax
-Base syntax is panflute's yaml-codeblock syntax. Some of "-inline" filters use standard URL link syntax
-with options(and with limitation).
+Base syntax is panflute's yaml-codeblock syntax.
+Some of "-inline" filters use standard hyperlink syntax with options(and with limitation).
+
+Note: **It used to have Image link syntax(`![caption](url){.filter}`) but now obsolete.**
 
 ~~~~~markdown
 ```listingtable
@@ -28,7 +30,11 @@ include: pandoc_pandocker_filters/ListingTable.py
 ~~~~~
 
 ## pandocker-bitfield(-inline)
-calls bitfield randerer internally. requires bitfield npm module
+Renders "bitfield" image from YAML or JSON.
+
+The filter calls bitfield randerer internally. It requires bitfield npm/nodeJS module.
+
+Reference for bitfield: <https://github.com/drom/bitfield>
 
 ### syntax
 ~~~~~markdown
@@ -84,7 +90,7 @@ Table: BitField filter options
 (**\***): Valid for yaml style syntax. URL link style uses link caption.
 
 ## pandocker-wavedrom-inline
-calls wavedrom randerer internally. requires wavedrom-cli and phantomJS npm modules
+The filter calls wavedrom randerer internally. requires wavedrom-cli and phantomJS npm modules
 
 ### syntax
 ~~~~~markdown
@@ -95,7 +101,7 @@ calls wavedrom randerer internally. requires wavedrom-cli and phantomJS npm modu
 
 ### options
 ## pandocker-listingtable(-inline)
-includes a text file as codeblock.
+The filter includes a text file as codeblock. Default caption is filename itself.
 
 ### syntax
 
@@ -135,7 +141,12 @@ Can co-operate with `bitfield-inline`/`wavedrom-inline` filters
 `````
 
 ### options
+
+| option | Optional | default value |           purpose            |
+|--------|----------|---------------|------------------------------|
+| angle  | N        |               | relative path to source file |
+
 # References
 
-- bitfield: <https://github.com/drom/bitfield>
 - wavedrom: <http://wavedrom.com/>
+- aafigure: <https://github.com/aafigure/aafigure>
