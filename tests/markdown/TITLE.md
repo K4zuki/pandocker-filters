@@ -99,18 +99,15 @@ ref to [@lst:inline-listingtable]
 caption: _**block bitfield rotation sample -45degree**_
 png: True
 pdf: True
+bits: 32
+lanes: 2
 ---
-# list from LSB
-# bits: bit width
-# attr: information RO/WO/RW etc.
-# name: name of bitfield
-- bits: 5
-- bits: 1
-  attr: RW
-  name: IPO
-- bits: 1
-  attr: RW
-  name: BRK
-- bits: 1
-  name: CPK
+[
+    { "name": "IPO",   "bits": 8, "attr": "RO" },
+    {                  "bits": 7 },
+    { "name": "BRK",   "bits": 5, "attr": "RW" },
+    { "name": "CPK",   "bits": 1 },
+    { "name": "Clear", "bits": 3 },
+    {                  "bits": 8 }
+]
 ```
