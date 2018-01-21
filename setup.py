@@ -32,6 +32,7 @@ requires = ["panflute>=1.10.3",
             "svgutils>=0.2.0",
             "svglib",
             "aafigure",
+            "bitfieldpy",
             ]
 
 VERSION = "0.0.19"
