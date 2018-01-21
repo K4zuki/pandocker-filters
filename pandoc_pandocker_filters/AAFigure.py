@@ -82,7 +82,7 @@ class AAFigure(object):
 
         render_message = "generate aafigure from" + linkto
         self.render_message = render_message if not self.render_message else self.render_message + linkto
-        # pf.debug(self.render_message)
+        pf.debug(self.render_message)
         element.classes.remove("aafigure")
         img = pf.Image(*caption, classes=element.classes, url=linkto,
                        identifier=element.identifier, title="fig:", attributes=element.attributes)
