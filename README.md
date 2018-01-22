@@ -34,7 +34,6 @@ Renders "bitfield" image from YAML or JSON.
 
 The filter calls bitfield randerer internally. It requires bitfield npm/nodeJS module.
 
-Reference for bitfield: <https://github.com/drom/bitfield>
 
 ### syntax
 ~~~~~markdown
@@ -148,5 +147,10 @@ Can co-operate with `bitfield-inline`/`wavedrom-inline` filters
 
 # References
 
-- wavedrom: <http://wavedrom.com/>
+- wavedrom: <http://wavedrom.com>
+- bitfield: <https://github.com/drom/bitfield>
 - aafigure: <https://github.com/aafigure/aafigure>
+
+# License
+
+MIT License (c) 2018 Kazuki Yamamoto
