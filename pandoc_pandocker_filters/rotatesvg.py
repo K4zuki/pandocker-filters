@@ -4,7 +4,7 @@
 # simple SVG rotate script
 # great hint from
 # https://stackoverflow.com/questions/43199869/rotate-and-scale-a-complete-svg-document-using-python
-# MIT license (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 import svgutils
 import math

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Pandoc filter using panflute
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 
 import io

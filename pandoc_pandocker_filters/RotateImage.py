@@ -3,6 +3,7 @@
 """
 modifying https://github.com/sergiocorreia/panflute-filters/filters/figure.py
 to rotate given image by desired angle
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 
 # ---------------------------

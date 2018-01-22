@@ -10,7 +10,7 @@ pandoc
 bitfield
 panflute
 
-applies MIT License (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 
 import os

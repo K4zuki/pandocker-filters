@@ -3,6 +3,7 @@
 """ listingtable-inline
 inline ListingTable filter which copies pointed external file
 with adding title which is expected to use pandoc-crossref
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 
 import os

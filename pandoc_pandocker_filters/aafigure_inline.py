@@ -7,7 +7,7 @@ then throws given code or file to aafigure,
 saves generated image in specified directory.
 the URL link will be replaced by an image link
 
-applies MIT License 2018 (c) K4ZUKI(k.yamamoto.08136891@gmail.com)
+applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 import os
 import panflute as pf
