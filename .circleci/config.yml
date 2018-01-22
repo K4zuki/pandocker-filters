@@ -8,7 +8,6 @@ jobs:
       - run:
           name: pip install from local
           command: |
-            pip3 install git+https://github.com/K4zuki/wavedrompy.git
             pip3 install -U .
       - run:
           name: Make HTML
@@ -18,7 +17,10 @@ jobs:
             make initdir html
       - run:
           name: Make PDF
-          command: make pdf
+          command: |
+            cd tests
+            ls
+            make initdir pdf
       # - run:
       #     name: Deploy preparation
       #     command: |
