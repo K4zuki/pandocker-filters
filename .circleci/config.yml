@@ -16,6 +16,9 @@ jobs:
             cd tests
             ls
             make initdir html
+      - run:
+          name: Make PDF
+          command: make pdf
       # - run:
       #     name: Deploy preparation
       #     command: |
