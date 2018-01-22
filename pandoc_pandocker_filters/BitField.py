@@ -22,6 +22,8 @@ import hashlib
 import datetime
 from shutil import which
 import subprocess
+from attrdict import AttrDict
+from bitfieldpy.bitfieldpy import BitField as BFP
 
 
 class BitField(object):
@@ -56,24 +58,19 @@ class BitField(object):
 
     def json2svg(self):
 
-        self.toSVG = [self.bitfield,
-                      "--input", self.source,
-                      "--vspace", self.vspace,
-                      "--hspace", self.hspace,
-                      "--lanes", self.lanes,
-                      "--bits", self.bits,
-                      "--fontfamily", self.fontfamily,
-                      "--fontsize", self.fontsize,
-                      "--fontweight", self.fontweight,
-                      ">", self.svg,
-                      ]
-        # pf.debug(" ".join(self.toSVG))
-        if not os.path.exists(self.svg):
-            with open(self.svg, "w", encoding="utf-8") as file:
-                try:
-                    subprocess.call(" ".join(self.toSVG), shell=True)
-                except IOError:
-                    raise
+        args = AttrDict({
+            "input": self.source,
+            "vspace": int(self.vspace),
+            "hspace": int(self.hspace),
+            "lanes": int(self.lanes),
+            "bits": int(self.bits),
+            "font_family": self.fontfamily,
+            "font_size": self.fontsize,
+            "font_weight": self.fontweight,
+            "svg": self.svg
+        })
+        bfp = BFP(args)
+        bfp.render()
 
     def svg2image(self):
         if(self.toPDF):
