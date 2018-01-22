@@ -80,10 +80,11 @@ class AAFigure(object):
         caption = caption[0]
         caption = caption.content
 
-        render_message = "generate aafigure from" + linkto
-        self.render_message = render_message if not self.render_message else self.render_message + linkto
+        render_message = " ".join(["generate aafigure from", linkto])
+        self.render_message = render_message if not self.render_message else " ".join([self.render_message, linkto])
         pf.debug(self.render_message)
         element.classes.remove("aafigure")
+        linkto = os.path.abspath(linkto).replace("\\", "/")
         img = pf.Image(*caption, classes=element.classes, url=linkto,
                        identifier=element.identifier, title="fig:", attributes=element.attributes)
         # pf.debug(img)
