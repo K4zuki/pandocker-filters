@@ -69,7 +69,7 @@ caption: Sample BitField
 
 Table: BitField filter options
 
-|    Option     | Optional |     Default     |      Purpose       |
+|  Parameters   | Optional |     Default     |      Purpose       |
 |---------------|----------|-----------------|--------------------|
 | `input`       | N        |                 | Source file name   |
 | `png`         | Y        | **True**        | PNG output flag    |
@@ -99,6 +99,13 @@ The filter calls wavedrom randerer internally. requires wavedrom-cli and phantom
 ~~~~~
 
 ### options
+
+| Parameters | optional | default value |     purpose     |
+|------------|----------|---------------|-----------------|
+| `png`      | Y        | **True**      | PNG output flag |
+| `eps`      | Y        | False         | EPS output flag |
+| `pdf`      | Y        | False         | PDF output flag |
+
 ## pandocker-listingtable(-inline)
 The filter includes a text file as codeblock. Default caption is filename itself.
 
@@ -120,12 +127,12 @@ tex: True
 
 Table: ListingTable options
 
-| option | Optional | default value |               purpose               |
-|--------|----------|---------------|-------------------------------------|
-| source | N        |               | relative path to source file        |
-| type   | N        | plain         | file type(python,cpp,markdown etc.) |
-| from   | Y        | 1             | crop lines from                     |
-| to     | Y        | (end of file) | crop lines to                       |
+| Parameters | Optional | default value |               purpose               |
+|------------|----------|---------------|-------------------------------------|
+| source     | N        |               | relative path to source file        |
+| type       | N        | plain         | file type(python,cpp,markdown etc.) |
+| from       | Y        | 1             | crop lines from                     |
+| to         | Y        | (end of file) | crop lines to                       |
 
 ## pandocker-rotateimage(-inline)
 rotates an image. positive number for CW, negative is CCW direction.
@@ -141,9 +148,9 @@ Can co-operate with `bitfield-inline`/`wavedrom-inline` filters
 
 ### options
 
-| option | Optional | default value |           purpose            |
-|--------|----------|---------------|------------------------------|
-| angle  | N        |               | relative path to source file |
+| Parameters | Optional | default value |           purpose            |
+|------------|----------|---------------|------------------------------|
+| angle      | N        |               | relative path to source file |
 
 # References
 
