@@ -156,7 +156,7 @@ class BitField(object):
         self.lanes = str(options.get("lanes", 1))
         self.bits = str(options.get("bits", 8))
 
-        self.fontfamily = '"' + options.get("fontfamily", "source code pro") + '"'
+        self.fontfamily = options.get("fontfamily", "source code pro")
         self.fontsize = str(options.get("fontsize", 16))
         self.fontweight = options.get("fontweight", "normal")
 
