@@ -12,12 +12,7 @@ applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 
 import os
 import panflute as pf
-from collections import OrderedDict
-import json
-import yaml
 from pandoc_pandocker_filters.BitField import BitField
-from shutil import which
-import subprocess
 import wavedrompy.wavedrom as wavedrom
 import attrdict
 
@@ -26,14 +21,6 @@ class wavedrom_inline(BitField):
 
     def __init__(self):
         super().__init__()
-
-        phantomjs = which("phantomjs")
-        phantomjs_nt = "bash \'" + phantomjs.replace("/c", "C:").replace(" ", "\ ") + "\'"
-        self.phantomjs = phantomjs if self.unix else phantomjs_nt
-
-        wavedrom = which("wavedrom")
-        wavedrom_nt = "bash \'" + wavedrom.replace("/c", "C:").replace(" ", "\ ") + "\'"
-        self.wavedrom = wavedrom if self.unix else wavedrom_nt
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Link) and "wavedrom" in elem.classes:
