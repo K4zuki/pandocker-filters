@@ -54,33 +54,12 @@ class inline_bitfield(BitField):
             return elem
 
         if isinstance(elem, pf.Image) and "bitfield" in elem.classes:
-            self.doc = doc
-            # pf.debug("bitfield_inline()")
-            # pf.debug(elem)
-            fn = elem.url
-            # pf.debug(fn)
-            options = elem.attributes
-            # pf.debug(options)
-
-            with open(fn, "r", encoding="utf-8") as f:
-                data = f.read()
-                data = self.validatejson(data)
-
-            self.get_options(options, data, elem, doc)
-            assert self.source is not None, "mandatory option input is not set"
-            assert os.path.exists(self.source) == 1, "input file does not exist"
-            assert isinstance(self.toPNG, bool), "option png is boolean"
-            assert isinstance(self.toPDF, bool), "option pdf is boolean"
-            assert isinstance(self.toEPS, bool), "option eps is boolean"
-
-            self.json2svg()
-            self.svg2image()
-
-            elem.url = self.linkto
-            pf.debug("[inline(Image link)] generate bitfield from", self.linkto)
-
-            # return []
-            return elem
+            pf.debug("#")
+            pf.debug("# Inline bitfield in image link syntax, which is *obsolete*, is detected.")
+            pf.debug("# Use hyperlink syntax from now - Just remove ! in front.")
+            pf.debug("# Removing link for safety.")
+            pf.debug("#")
+            return []
 
 
 def main(doc=None):
