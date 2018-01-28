@@ -58,7 +58,7 @@ pdf: True
 
 ref to [@fig:block-bitfield]
 
-![**inline bitfield sample**](data/bitfields/bit.yaml){.bitfield png=True pdf=True eps=True #fig:inline-bitfield}
+[**inline bitfield sample**](data/bitfields/bit.yaml){.bitfield png=True pdf=True eps=True #fig:inline-bitfield}
 
 ref to [@fig:inline-bitfield]
 
@@ -78,9 +78,8 @@ ref to [@lst:block-listingtable]
 
 ref to [@lst:inline-listingtable]
 
-![inline wavedrom sample by image link](data/waves/wave.yaml){.wavedrom png=True pdf=True}
 
-[inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True}
+[inline wavedrom sample](data/waves/wave.yaml){.wavedrom png=True pdf=True}
 
 [返却パケット](data/waves/commandSandP_wo_ret.yaml){.wavedrom}
 
@@ -88,15 +87,15 @@ ref to [@lst:inline-listingtable]
 
 [該当するI^2^Cバスの動き](data/waves/commandSandP_wo_bus.yaml){.wavedrom}
 
-[other inline wavedrom sample by hyperlink](data/waves/anotherwave.yaml){.wavedrom png=True pdf=True}
+[other inline wavedrom sample](data/waves/anotherwave.yaml){.wavedrom png=True pdf=True}
 
-[another inline wavedrom sample by hyperlink](data/waves/wave.yaml){.wavedrom png=True pdf=True}
+[another inline wavedrom sample](data/waves/wave.yaml){.wavedrom png=True pdf=True}
 
-[inline wavedrom rotation sample 45degree by hyperlink](data/waves/commandSandP_wo_bus.yaml){.wavedrom png=True pdf=True .rotate angle=45}
+[inline wavedrom rotation sample 45degree ](data/waves/commandSandP_wo_bus.yaml){.wavedrom png=True pdf=True .rotate angle=45}
 
-![inline wavedrom rotation sample 30degree](data/waves/wave.yaml){.wavedrom png=True pdf=True .rotate angle=30}
+[inline wavedrom rotation sample 30degree](data/waves/wave.yaml){.wavedrom png=True pdf=True .rotate angle=30}
 
-![inline bitfield rotation sample -30degree](data/bitfields/bit.yaml){.bitfield png=True pdf=True .rotate angle=-30}
+[inline bitfield rotation sample -30degree](data/bitfields/bit.yaml){.bitfield png=True pdf=True .rotate angle=-30}
 
 ```{.bitfield .rotate angle=-45}
 # input: data/bitfields/bit.yaml
