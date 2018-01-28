@@ -18,6 +18,8 @@ import yaml
 from pandoc_pandocker_filters.BitField import BitField
 from shutil import which
 import subprocess
+import wavedrompy.wavedrom as wavedrom
+import attrdict
 
 
 class wavedrom_inline(BitField):
@@ -75,13 +77,15 @@ class wavedrom_inline(BitField):
 
         # /Users/yamamoto/.nodebrew/current/bin/phantomjs
         # phantomjs /Users/yamamoto/.nodebrew/current/bin/wavedrom -i Out/wave.wavejson -p images/waves/wave.png
-        self.toSVG = [self.phantomjs,
-                      self.wavedrom,
-                      "-i", self.source,
-                      "-s", self.svg
-                      ]
+        args = attrdict.AttrDict({"input": self.source, "svg": self.svg})
+        wavedrom.main(args)
+        # self.toSVG = [self.phantomjs,
+        #               self.wavedrom,
+        #               "-i", self.source,
+        #               "-s", self.svg
+        #               ]
         # pf.debug(" ".join(self.toSVG))
-        subprocess.call(self.toSVG)
+        # subprocess.call(self.toSVG)
         # with open(self.svg, "w", encoding="utf-8") as file:
         #     try:
         #         file.write(pf.shell(" ".join(self.toSVG)).decode("utf-8"))
