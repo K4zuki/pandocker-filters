@@ -35,7 +35,7 @@ requires = ["panflute>=1.10.3",
             "bitfieldpy",
             ]
 
-VERSION = "0.0.19"
+VERSION = "0.0.20"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
