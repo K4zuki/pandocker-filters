@@ -28,7 +28,7 @@ setup(
 )
 """
 requires = ["panflute>=1.10.3",
-            "Pillow>=4.2.1,<5.0",
+            "Pillow<5.0",
             "svgutils>=0.2.0",
             "svglib",
             "aafigure",
