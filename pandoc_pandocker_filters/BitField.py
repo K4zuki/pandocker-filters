@@ -31,9 +31,6 @@ class BitField(object):
     def __init__(self):
 
         self.unix = True if (os.name) != "nt" else False
-        bitfield = which("bitfield")
-        bitfield_nt = "bash \'" + bitfield.replace("/c", "C:").replace(" ", "\ ") + "\'"
-        self.bitfield = bitfield if self.unix else bitfield_nt
         self.counter = 0
         self.pdfconvert = None
         self.pngconvert = None
