@@ -108,3 +108,6 @@ tests/svg/
 tests/Out/
 tests/pd-images/
 tests/node_modules/
+tests/*.png
+tests/*.svg
+
