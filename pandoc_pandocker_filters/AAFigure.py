@@ -12,11 +12,6 @@ applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 
 import os
 import panflute as pf
-from collections import OrderedDict
-import json
-import yaml
-from shutil import which
-# import subprocess
 import aafigure
 import hashlib
 
@@ -33,7 +28,7 @@ class AAFigure(object):
         self.source = options.get("input")
         self.toPNG = bool(options.get("png", True))
         self.toSVG = bool(options.get("svg", False))
-        self.toPDF = bool(options.get("pdf", False))
+        self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
 
