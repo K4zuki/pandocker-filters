@@ -32,6 +32,9 @@ class AAFigure(object):
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
 
+        if os.path.exists(self.dir_to) != 1:
+            os.mkdir(self.dir_to)
+
         self.counter = hashlib.sha1(data.encode("utf-8")).hexdigest()[:8]
         self.basename = "/".join([self.dir_to,
                                   str(self.counter)])
