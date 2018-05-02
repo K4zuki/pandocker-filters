@@ -89,7 +89,9 @@ class ListingTable(object):
         basename = os.path.basename(filename)
         file_type = options.get("type", "plain")
         types = [file_type, "numberLines"]
-        # options["numbers"] = "left"
+        startFrom = options.get("startFrom", "1")
+        numbers = options.get("numbers", "left")
+        attr = {"startFrom": startFrom, "numbers": numbers}
         linefrom = options.get("from")
         lineto = options.get("to")
         linefrom = None if not linefrom else (int(linefrom) - 1)
@@ -118,7 +120,7 @@ class ListingTable(object):
         label = basename.lower().replace(".", "_").replace("/", "_") + str(self.counter)
         idn = idn if idn else "lst:{label:s}".format(label=label)
 
-        read = pf.CodeBlock(raw, classes=types, identifier=idn, attributes=options)
+        read = pf.CodeBlock(raw, classes=types, identifier=idn, attributes=attr)
 
         ret = [pf.Para(pf.Str("Listing:"), pf.Space(), *caption), read]
         return ret
