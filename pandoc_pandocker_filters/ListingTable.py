@@ -89,7 +89,7 @@ class ListingTable(object):
         basename = os.path.basename(filename)
         file_type = options.get("type", "plain")
         types = [file_type, "numberLines"]
-        options["numbers"] = "left"
+        # options["numbers"] = "left"
         linefrom = options.get("from")
         lineto = options.get("to")
         linefrom = None if not linefrom else (int(linefrom) - 1)
