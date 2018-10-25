@@ -84,7 +84,7 @@ class ListingTable(object):
         if self.doc.format in ["latex"]:
             for c in caption:
                 if isinstance(c, (pf.Str)):
-                    c.text = c.text.replace("_", "\\textunderscore ")
+                    c.text = c.text.replace("_", r"\textunderscore ")
                     # pf.debug(c.text)
         basename = os.path.basename(filename)
         file_type = options.get("type", "plain")
@@ -98,7 +98,7 @@ class ListingTable(object):
         lineto = None if not lineto else (int(lineto))
 
         if self.doc.format in ["latex"]:
-            file_title = basename.replace("_", "\textunderscore")
+            file_title = basename.replace("_", r"\textunderscore")
         else:
             file_title = basename
 
