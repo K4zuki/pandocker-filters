@@ -35,7 +35,7 @@ requires = ["panflute>=1.10.3",
             "bitfieldpy",
             ]
 
-VERSION = "0.0.20"
+VERSION = "0.0.21"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
@@ -57,6 +57,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         "console_scripts": [
+            "pandocker-filters = pandoc_pandocker_filters:main",
             "pandocker-bitfield = pandoc_pandocker_filters.BitField:main",
             "pandocker-bitfield-inline = pandoc_pandocker_filters.bitfield_inline:main",
             "pandocker-listingtable = pandoc_pandocker_filters.ListingTable:main",
