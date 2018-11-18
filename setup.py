@@ -33,13 +33,12 @@ requires = ["panflute>=1.10.3",
             "svglib",
             "aafigure",
             "bitfieldpy",
+            "wavedrom",
             ]
 
-VERSION = "0.0.21"
 setup(
     name="pandoc_pandocker_filters",
     packages=find_packages(exclude=["contrib", "docs", "tests"]),
-    version=VERSION,  # Ideally should be same as your GitHub release tag varsion
     description="Yet another set of pandoc filters",
     author="k4zuki",
     author_email="k.yamamoto.08136891@gmail.com",
@@ -55,6 +54,8 @@ setup(
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     entry_points={
         "console_scripts": [
             "pandocker-filters = pandoc_pandocker_filters:main",
