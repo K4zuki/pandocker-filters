@@ -13,7 +13,7 @@ applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 import os
 import panflute as pf
 from pandoc_pandocker_filters.BitField import BitField
-import wavedrompy.wavedrom as wavedrom
+import wavedrom.wavedrom as wavedrom
 import attrdict
 
 
@@ -24,7 +24,6 @@ class wavedrom_inline(BitField):
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Link) and "wavedrom" in elem.classes:
-
             fn = elem.url
             options = elem.attributes
             idn = elem.identifier
