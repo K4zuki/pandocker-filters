@@ -34,6 +34,7 @@ requires = ["panflute>=1.10.3",
             "aafigure",
             "bitfieldpy",
             "wavedrom",
+            "pantable",
             ]
 
 setup(
@@ -68,6 +69,7 @@ setup(
             "pandocker-rotateimage-inline = pandoc_pandocker_filters.rotateimage_inline:main",
             "pandocker-aafigure = pandoc_pandocker_filters.AAFigure:main",
             "pandocker-aafigure-inline = pandoc_pandocker_filters.aafigure_inline:main",
+            "pandocker-pantable-inline = pandoc_pandocker_filters.pantable_inline:main"
         ],
     },
 )

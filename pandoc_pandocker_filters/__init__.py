@@ -4,6 +4,7 @@ from . import bitfield_inline
 from . import listingtable_inline
 from . import rotateimage_inline
 from . import wavedrom_inline
+from . import pantable_inline
 
 
 def main(doc=None):
@@ -12,7 +13,8 @@ def main(doc=None):
     lt = listingtable_inline.inline_listingtable()
     roi = rotateimage_inline.rotateimage_inline()
     wd = wavedrom_inline.wavedrom_inline()
-    pf.run_filters([aaf.action, bf.action, lt.action, roi.action, wd.action], doc=doc)
+    pt = pantable_inline.pantable_inline()
+    pf.run_filters([aaf.action, bf.action, lt.action, roi.action, wd.action, pt.action], doc=doc)
     return doc
 
 
