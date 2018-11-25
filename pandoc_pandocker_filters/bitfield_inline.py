@@ -20,7 +20,7 @@ class inline_bitfield(BitField):
     def __init__(self):
         super().__init__()
 
-    def action(self, elem, doc):
+    def action(self, elem, doc, **args):
         if isinstance(elem, pf.Link) and "bitfield" in elem.classes:
             fn = elem.url
             options = elem.attributes

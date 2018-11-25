@@ -16,7 +16,7 @@ class inline_listingtable(ListingTable):
     def __init__(self):
         super().__init__()
 
-    def action(self, elem, doc):
+    def action(self, elem, doc, **args):
         self.doc = doc
         if isinstance(elem, (pf.Para)) and len(elem.content) == 1:
             for subelem in elem.content:
