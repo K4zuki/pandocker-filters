@@ -114,3 +114,7 @@ lanes: 2
     {                  "bits": 8 }
 ]
 ```
+
+[inline pantable sample](data/table.csv){.table #tbl:table markdown=True}
+
+ref to [@tbl:table]
