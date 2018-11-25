@@ -42,7 +42,7 @@ def main(doc=None):
 def listed(doc=None):
     inline = inline_listingtable()
     block = ListingTable()
-    return pf.run_filters([inline.action, pf.yaml_filter], tag="aafigure", function=block.action, doc=doc)
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="listingtable", function=block.action, doc=doc)
 
 
 if __name__ == "__main__":

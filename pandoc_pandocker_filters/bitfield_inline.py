@@ -66,7 +66,7 @@ def main(doc=None):
 def listed(doc=None):
     inline = inline_bitfield()
     block = BitField()
-    return pf.run_filters([inline.action, pf.yaml_filter], tag="aafigure", function=block.generate, doc=doc)
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="bitfield", function=block.generate, doc=doc)
 
 
 if __name__ == "__main__":

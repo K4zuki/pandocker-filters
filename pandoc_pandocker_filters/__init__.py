@@ -14,7 +14,7 @@ def main(doc=None):
     roi = rotateimage_inline.rotateimage_inline()
     wd = wavedrom_inline.wavedrom_inline()
     pt = pantable_inline.pantable_inline()
-    pf.run_filters([aaf.action, bf.action, lt.action, roi.action, wd.action, pt.action], doc=doc)
+    pf.run_filters([aaf.action, bf.action, lt.action, wd.action, pt.action, roi.action], doc=doc)
     return doc
 
 
