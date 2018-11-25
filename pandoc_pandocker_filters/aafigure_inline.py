@@ -19,9 +19,8 @@ class inline_aafigure(AAFigure):
     def __init__(self):
         super().__init__()
 
-    def action(self, elem, doc):
+    def action(self, elem, doc, **args):
         if isinstance(elem, pf.Link) and "aafigure" in elem.classes:
-
             fn = elem.url
             options = elem.attributes
             idn = elem.identifier
@@ -39,6 +38,12 @@ class inline_aafigure(AAFigure):
 def main(doc=None):
     aaf = inline_aafigure()
     return pf.run_filter(aaf.action, doc=doc)
+
+
+def listed(doc=None):
+    inline = inline_aafigure()
+    block = AAFigure()
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="aafigure", function=block.render, doc=doc)
 
 
 if __name__ == "__main__":

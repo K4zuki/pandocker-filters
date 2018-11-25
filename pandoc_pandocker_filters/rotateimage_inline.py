@@ -17,7 +17,7 @@ class rotateimage_inline(RotateImage):
     def __init__(self):
         super().__init__()
 
-    def action(self, elem, doc):
+    def action(self, elem, doc, **args):
         # pf.debug("action()")
         if isinstance(elem, pf.Image) and "rotate" in elem.classes:
             self.doc = doc
@@ -37,6 +37,12 @@ def main(doc=None):
     ri = rotateimage_inline()
     return pf.run_filter(ri.action,
                          doc=doc)
+
+
+def listed(doc=None):
+    inline = rotateimage_inline()
+    block = RotateImage()
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="rotate", function=block.figure, doc=doc)
 
 
 if __name__ == "__main__":

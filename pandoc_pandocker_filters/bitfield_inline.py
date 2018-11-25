@@ -22,7 +22,6 @@ class inline_bitfield(BitField):
 
     def action(self, elem, doc):
         if isinstance(elem, pf.Link) and "bitfield" in elem.classes:
-
             fn = elem.url
             options = elem.attributes
             idn = elem.identifier
@@ -62,6 +61,12 @@ class inline_bitfield(BitField):
 def main(doc=None):
     bf = inline_bitfield()
     return pf.run_filter(bf.action, doc=doc)
+
+
+def listed(doc=None):
+    inline = inline_bitfield()
+    block = BitField()
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="aafigure", function=block.generate, doc=doc)
 
 
 if __name__ == "__main__":

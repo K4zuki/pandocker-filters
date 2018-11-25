@@ -11,13 +11,13 @@ applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 # ---------------------------
 
 import os
-from string import Template
 
 import panflute as pf
 from PIL import Image
 from collections import OrderedDict
 from pandoc_pandocker_filters.rotatesvg import rotatesvg
 from pandoc_pandocker_filters.BitField import BitField
+
 
 # ---------------------------
 # Functions
@@ -43,14 +43,14 @@ class RotateImage(object):
         # pf.debug(angle)
         angle = angle % 360.0
         path, ext = os.path.splitext(filename)
-        if(angle == 0):
+        if (angle == 0):
             pass
         else:
-            if(angle < 0):
+            if (angle < 0):
                 angle = 360 - abs(angle)
             # pf.debug(angle)
 
-            if(ext in [".svg", ".pdf"]):
+            if (ext in [".svg", ".pdf"]):
                 filename = "".join([path, ".svg"])
                 tmp = self.rs.rotate(filename, angle)
                 renamed = "%s_r%+03d%s" % (path, angle, ".svg")
@@ -60,7 +60,7 @@ class RotateImage(object):
 
             if not os.path.exists(renamed):
                 tmp.save(renamed)
-            if(ext == ".pdf"):
+            if (ext == ".pdf"):
                 self.bf.svg = renamed
                 self.bf.toPDF = True
                 self.bf.toPNG = False

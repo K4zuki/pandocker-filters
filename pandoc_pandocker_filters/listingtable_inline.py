@@ -39,5 +39,11 @@ def main(doc=None):
     return pf.run_filter(lt.action, doc=doc)
 
 
+def listed(doc=None):
+    inline = inline_listingtable()
+    block = ListingTable()
+    return pf.run_filters([inline.action, pf.yaml_filter], tag="aafigure", function=block.action, doc=doc)
+
+
 if __name__ == "__main__":
     main()

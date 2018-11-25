@@ -60,15 +60,25 @@ setup(
     entry_points={
         "console_scripts": [
             "pandocker-filters = pandoc_pandocker_filters:main",
-            "pandocker-bitfield = pandoc_pandocker_filters.BitField:main",
+
+            "pandocker-bitfield = pandoc_pandocker_filters.bitfield_inline:listed",
+            "pandocker-bitfield-block = pandoc_pandocker_filters.BitField:main",
             "pandocker-bitfield-inline = pandoc_pandocker_filters.bitfield_inline:main",
-            "pandocker-listingtable = pandoc_pandocker_filters.ListingTable:main",
+
+            "pandocker-listingtable = pandoc_pandocker_filters.listingtable_inline:listed",
+            "pandocker-listingtable-block = pandoc_pandocker_filters.ListingTable:main",
             "pandocker-listingtable-inline = pandoc_pandocker_filters.listingtable_inline:main",
+
             "pandocker-wavedrom-inline = pandoc_pandocker_filters.wavedrom_inline:main",
-            "pandocker-rotateimage = pandoc_pandocker_filters.RotateImage:main",
+
+            "pandocker-rotateimage = pandoc_pandocker_filters.rotateimage_inline:listed",
+            "pandocker-rotateimage-block = pandoc_pandocker_filters.RotateImage:main",
             "pandocker-rotateimage-inline = pandoc_pandocker_filters.rotateimage_inline:main",
-            "pandocker-aafigure = pandoc_pandocker_filters.AAFigure:main",
+
+            "pandocker-aafigure = pandoc_pandocker_filters.aafigure_inline:listed",
+            "pandocker-aafigure-block = pandoc_pandocker_filters.AAFigure:main",
             "pandocker-aafigure-inline = pandoc_pandocker_filters.aafigure_inline:main",
+
             "pandocker-pantable-inline = pandoc_pandocker_filters.pantable_inline:main"
         ],
     },
