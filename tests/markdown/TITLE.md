@@ -33,7 +33,7 @@ A   B
     ---#
 ```
 
-<!--[inline aafigure sample](data/aafigure.txt){.aafigure png=True pdf=True eps=True}-->
+[inline aafigure sample](data/aafigure.txt){.aafigure png=True pdf=True eps=True}
 
 ```{.bitfield #fig:block-bitfield}
 # input: data/bitfields/bit.yaml
@@ -58,7 +58,6 @@ pdf: True
 
 ref to [@fig:block-bitfield]
 
-<!--
 [**inline bitfield sample**](data/bitfields/bit.yaml){.bitfield png=True pdf=True eps=True #fig:inline-bitfield}
 
 ref to [@fig:inline-bitfield]
@@ -97,7 +96,6 @@ ref to [@lst:inline-listingtable]
 [inline wavedrom rotation sample 30degree](data/waves/wave.yaml){.wavedrom png=True pdf=True .rotate angle=30}
 
 [inline bitfield rotation sample -30degree](data/bitfields/bit.yaml){.bitfield png=True pdf=True .rotate angle=-30}
--->
 
 ```{.bitfield .rotate angle=-45}
 # input: data/bitfields/bit.yaml
