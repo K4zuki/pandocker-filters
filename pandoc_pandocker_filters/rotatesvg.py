@@ -50,7 +50,7 @@ class rotatesvg(object):
             offset_y = w * abs(math.sin(rad))
             # debug("180 < ", angle, " < 360")
             if (180 < angle <= 270):
-                offset_x = float(width) * abs(math.cos(rad))
+                offset_x = w * abs(math.cos(rad))
                 offset_y += h * abs(math.cos(rad))
                 # debug("180 < ", angle, " <= 270")
         else:
