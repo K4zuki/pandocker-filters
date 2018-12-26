@@ -11,12 +11,12 @@ PROJECT= `pwd`
 # DATADIR:= data
 # TARGETDIR:= Out
 # IMAGEDIR:= images
-# WAVEDIR:= waves
-# BITDIR:= bitfields
-# BIT16DIR:= bitfield16
 
 # CONFIG:= config.yaml
 # INPUT:= TITLE.md
-# TARGET:= TARGET
+# TARGET:= TARGET-$(DATE)-$(HASH)
+# REFERENCE:= $(MISC)/ref.docx
+# COREPROPFLAGS := --table "Normal Table=Centered"
+# COREPROPFLAGS += --paragraph "Normal=Body Text"
 ##
 include $(MISC)/Makefile
