@@ -61,13 +61,13 @@ class RotateImage(object):
             if not os.path.exists(renamed):
                 tmp.save(renamed)
             if (ext == ".pdf"):
-                self.bf.svg = renamed
-                self.bf.toPDF = True
-                self.bf.toPNG = False
-                self.bf.toEPS = False
+                self.bf.svg_filename = renamed
+                self.bf.convert_to_pdf = True
+                self.bf.convert_to_png = False
+                self.bf.convert_to_eps = False
                 self.bf.basename = os.path.splitext(renamed)[0]
-                self.bf.svg2image()
-                renamed = self.bf.pdf
+                self.bf.render_images()
+                renamed = self.bf.pdf_filename
                 # pf.debug("pdf", self.bf.pdf)
 
             filename = renamed

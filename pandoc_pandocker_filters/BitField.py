@@ -10,7 +10,7 @@ pandoc
 bitfield
 panflute
 
-applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
+applies MIT License (c) 2017-2019 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 """
 
 import os
@@ -19,22 +19,26 @@ from collections import OrderedDict
 import json
 import yaml
 import hashlib
-import datetime
 from shutil import which
 import subprocess
-from attrdict import AttrDict
-from bitfieldpy.bitfieldpy import BitField as BFP
+import wavedrom.bitfield as bitfield
 
 
 class BitField(object):
+    defaultdir_to = "svg"
+    svg_filename = ""
+    png_filename = ""
+    pdf_filename = ""
+    eps_filename = ""
+    doc = ""
+    counter = 0
+    pdfconvert = None
+    pngconvert = None
+    epsconvert = None
 
     def __init__(self):
 
         self.unix = True if (os.name) != "nt" else False
-        self.counter = 0
-        self.pdfconvert = None
-        self.pngconvert = None
-        self.epsconvert = None
         if self.unix:
             # pf.debug(which("rsvg-convert"))
             self.pdfconvert = which("rsvg-convert")
@@ -46,97 +50,87 @@ class BitField(object):
             self.pdfconvert = "bash \'" + str(svg2pdf.replace("/c", "C:").replace(" ", "\ ")) + "\'"
             self.pngconvert = "bash \'" + str(svg2png.replace("/c", "C:").replace(" ", "\ ")) + "\'"
             pf.debug("non-UNIX OS!")
-        self.defaultdir_to = "svg"
-        self.svg = ""
-        self.png = ""
-        self.pdf = ""
-        self.eps = ""
-        self.doc = ""
 
     def json2svg(self):
 
-        args = AttrDict({
-            "input": self.source,
-            "vspace": int(self.vspace),
-            "hspace": int(self.hspace),
-            "lanes": int(self.lanes),
-            "bits": int(self.bits),
-            "font_family": self.fontfamily,
-            "font_size": self.fontsize,
-            "font_weight": self.fontweight,
-            "svg": self.svg
-        })
-        bfp = BFP(args)
-        bfp.render()
+        with open(self.source, "r") as f:
+            output = bitfield.BitField().render(json.loads(f.read()), self.options)
+            output.saveas(self.svg_filename)
 
-    def svg2image(self):
-        if(self.toPDF):
-            self.svg2pdf()
+    def render_images(self):
+        if (self.convert_to_pdf):
+            self.render_pdf()
 
-        if(self.toPNG):
-            self.svg2png()
+        if (self.convert_to_png):
+            self.render_png()
 
-        if(self.toEPS):
-            self.svg2eps()
+        if (self.convert_to_eps):
+            self.render_eps()
 
         if self.doc.format in ["latex"]:
-            linkto = self.pdf
+            linkto = self.pdf_filename
         elif self.doc.format in ["html", "html5"]:
-            linkto = self.svg
+            linkto = self.svg_filename
         else:
-            linkto = self.png
+            linkto = self.png_filename
 
         self.linkto = os.path.abspath(linkto).replace("\\", "/")
 
-    def svg2png(self):
-        output = [self.pngconvert, self.svg]
-        self.png = ".".join([str(self.basename), "png"])
+    def render_png(self):
+        command_stack = [self.pngconvert, self.svg_filename]
+        self.png_filename = ".".join([str(self.basename), "png"])
         if self.unix:
-            output.append("--format=png")
-        output.append("--output")
-        output.append(self.png)
+            command_stack.append("--format=png")
+        command_stack.append("--output")
+        command_stack.append(self.png_filename)
         # pf.debug(" ".join(output))
-        if not os.path.exists(self.png):
-            subprocess.call(" ".join(output), shell=True)
+        if not os.path.exists(self.png_filename):
+            subprocess.call(" ".join(command_stack), shell=True)
         else:
-            pf.debug("bypass conversion as output exists:", self.png)
+            pf.debug("bypass conversion as output exists:", self.png_filename)
 
-    def svg2pdf(self):
-        output = [self.pdfconvert, self.svg]
-        self.pdf = ".".join([str(self.basename), "pdf"])
+    def render_pdf(self):
+        command_stack = [self.pdfconvert, self.svg_filename]
+        self.pdf_filename = ".".join([str(self.basename), "pdf"])
         if self.unix:
-            output.append("--format=pdf")
-        output.append("--output")
-        output.append(self.pdf)
+            command_stack.append("--format=pdf")
+        command_stack.append("--output")
+        command_stack.append(self.pdf_filename)
         # pf.debug(" ".join(output))
-        if not os.path.exists(self.pdf):
-            subprocess.call(" ".join(output), shell=True)
+        if not os.path.exists(self.pdf_filename):
+            subprocess.call(" ".join(command_stack), shell=True)
         else:
-            pf.debug("bypass conversion as output exists:", self.pdf)
+            pf.debug("bypass conversion as output exists:", self.pdf_filename)
 
-    def svg2eps(self):
-        self.eps = ".".join([self.basename, "eps"])
-        output = [self.epsconvert,
-                  self.svg,
-                  "--format=eps",
-                  "--output",
-                  self.eps
-                  ]
+    def render_eps(self):
+        self.eps_filename = ".".join([self.basename, "eps"])
+        command_stack = [self.epsconvert,
+                         self.svg_filename,
+                         "--format=eps",
+                         "--output",
+                         self.eps_filename
+                         ]
         # pf.debug(" ".join(output))
-        if not os.path.exists(self.eps):
+        if not os.path.exists(self.eps_filename):
             # renderPS.drawToFile(drawing, self.eps)
-            pf.shell(" ".join(output))
+            pf.shell(" ".join(command_stack))
         else:
-            pf.debug("bypass conversion as output exists:", self.eps)
+            pf.debug("bypass conversion as output exists:", self.eps_filename)
 
     def validatejson(self, data=""):
-        ext = ""
+        """ Test source string whether genuine JSON or YAML
+        If `data` is JSON format string, return as-is; if YAML format, convert to JSON and return
+
+        :param string data: source string under validation
+        :return data: JSON format string
+        """
+
         try:
             j = json.loads(data)
         except ValueError:
             # pf.debug("data is not json")
             try:
-                data = json.dumps(yaml.load(data), indent=4)
+                data = json.dumps(yaml.load(data, Loader=yaml.SafeLoader), indent=4)
             except ValueError:
                 # pf.debug("data is not json nor yaml")
                 raise
@@ -147,15 +141,15 @@ class BitField(object):
 
         # pf.debug("get_options()")
         self.source = options.get("input")
-
-        self.vspace = str(options.get("lane-height", 80))
-        self.hspace = str(options.get("lane-width", 640))
-        self.lanes = str(options.get("lanes", 1))
-        self.bits = str(options.get("bits", 8))
-
-        self.fontfamily = options.get("fontfamily", "source code pro")
-        self.fontsize = str(options.get("fontsize", 16))
-        self.fontweight = options.get("fontweight", "normal")
+        self.options = bitfield.Options(
+            vspace=int(options.get("lane-height", 80)),
+            hspace=int(options.get("lane-width", 640)),
+            lanes=int(options.get("lanes", 1)),
+            bits=int(options.get("bits", 8)),
+            fontfamily=options.get("fontfamily", "source code pro"),
+            fontsize=int(options.get("fontsize", 16)),
+            fontweight=options.get("fontweight", "normal")
+        )
 
         self.caption = options.get("caption", "Untitled")
         self.dir_to = options.get("directory", self.defaultdir_to)
@@ -181,11 +175,11 @@ class BitField(object):
         self.identifier = element.identifier
         self.label = options.get("label", os.path.splitext(os.path.basename(self.source))[0])
 
-        self.toPNG = bool(options.get("png", True))
-        self.toEPS = bool(options.get("eps", False))
-        self.toPDF = True if doc.format in ["latex"] else bool(options.get("pdf", False))
+        self.convert_to_png = bool(options.get("png", True))
+        self.convert_to_eps = bool(options.get("eps", False))
+        self.convert_to_pdf = True if doc.format in ["latex"] else bool(options.get("pdf", False))
 
-        self.svg = ".".join([self.basename, "svg"])
+        self.svg_filename = ".".join([self.basename, "svg"])
 
         # pf.debug(isinstance(self.toPNG, bool))
         # pf.debug(self.toPDF)
@@ -207,12 +201,12 @@ class BitField(object):
 
         assert self.source is not None, "mandatory option input is not set"
         assert os.path.exists(self.source) == 1, "input file does not exist"
-        assert isinstance(self.toPNG, bool), "option png is boolean"
-        assert isinstance(self.toPDF, bool), "option pdf is boolean"
-        assert isinstance(self.toEPS, bool), "option eps is boolean"
+        assert isinstance(self.convert_to_png, bool), "option png is boolean"
+        assert isinstance(self.convert_to_pdf, bool), "option pdf is boolean"
+        assert isinstance(self.convert_to_eps, bool), "option eps is boolean"
 
         self.json2svg()
-        self.svg2image()
+        self.render_images()
 
         if not self.attr:
             attr = OrderedDict({})

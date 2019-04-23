@@ -1,39 +1,12 @@
 # Always prefer setuptools over distutils
 from setuptools import setup, find_packages
 
-"""
-from setuptools import setup
-
-
-requires = ["requests>=2.14.2"]
-
-
-setup(
-    name="your_package",
-    version="0.1",
-    description="Awesome library",
-    url="https://github.com/whatever/whatever",
-    author="yourname",
-    author_email="your@address.com",
-    license="MIT",
-    keywords="sample setuptools development",
-    packages=[
-        "your_package",
-        "your_package.subpackage",
-    ],
-    install_requires=requires,
-    classifiers=[
-        "Programming Language :: Python :: 3.6",
-    ],
-)
-"""
 requires = ["panflute>=1.10.3",
             "Pillow",
             "svgutils>=0.2.0",
             "svglib",
             "aafigure",
-            "bitfieldpy",
-            "wavedrom",
+            "wavedrom==1.8.0",
             "pantable",
             ]
 

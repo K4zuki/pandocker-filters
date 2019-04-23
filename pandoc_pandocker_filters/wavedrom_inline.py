@@ -13,7 +13,7 @@ applies MIT License (c) 2017-2018 Kazuki Yamamoto(k.yamamoto.08136891@gmail.com)
 import os
 import panflute as pf
 from pandoc_pandocker_filters.BitField import BitField
-import wavedrom.wavedrom as wavedrom
+import wavedrom
 import attrdict
 
 
@@ -35,12 +35,12 @@ class wavedrom_inline(BitField):
             self.get_options(options, data, elem, doc)
             assert self.source is not None, "mandatory option input is not set"
             assert os.path.exists(self.source) == 1, "input file does not exist"
-            assert isinstance(self.toPNG, bool), "option png is boolean"
-            assert isinstance(self.toPDF, bool), "option pdf is boolean"
-            assert isinstance(self.toEPS, bool), "option eps is boolean"
+            assert isinstance(self.convert_to_png, bool), "option png is boolean"
+            assert isinstance(self.convert_to_pdf, bool), "option pdf is boolean"
+            assert isinstance(self.convert_to_eps, bool), "option eps is boolean"
 
             self.json2svg()
-            self.svg2image()
+            self.render_images()
 
             pf.debug("[inline] generate wavedrom from", self.linkto)
             # pf.debug(elem)
@@ -61,22 +61,8 @@ class wavedrom_inline(BitField):
 
     def json2svg(self):
 
-        # /Users/yamamoto/.nodebrew/current/bin/phantomjs
-        # phantomjs /Users/yamamoto/.nodebrew/current/bin/wavedrom -i Out/wave.wavejson -p images/waves/wave.png
-        args = attrdict.AttrDict({"input": self.source, "svg": self.svg})
+        args = attrdict.AttrDict({"input": self.source, "svg": self.svg_filename})
         wavedrom.main(args)
-        # self.toSVG = [self.phantomjs,
-        #               self.wavedrom,
-        #               "-i", self.source,
-        #               "-s", self.svg
-        #               ]
-        # pf.debug(" ".join(self.toSVG))
-        # subprocess.call(self.toSVG)
-        # with open(self.svg, "w", encoding="utf-8") as file:
-        #     try:
-        #         file.write(pf.shell(" ".join(self.toSVG)).decode("utf-8"))
-        #     except IOError:
-        #         raise
 
 
 def main(doc=None):

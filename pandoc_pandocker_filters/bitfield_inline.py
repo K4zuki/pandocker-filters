@@ -33,12 +33,12 @@ class inline_bitfield(BitField):
             self.get_options(options, data, elem, doc)
             assert self.source is not None, "mandatory option input is not set"
             assert os.path.exists(self.source) == 1, "input file does not exist"
-            assert isinstance(self.toPNG, bool), "option png is boolean"
-            assert isinstance(self.toPDF, bool), "option pdf is boolean"
-            assert isinstance(self.toEPS, bool), "option eps is boolean"
+            assert isinstance(self.convert_to_png, bool), "option png is boolean"
+            assert isinstance(self.convert_to_pdf, bool), "option pdf is boolean"
+            assert isinstance(self.convert_to_eps, bool), "option eps is boolean"
 
             self.json2svg()
-            self.svg2image()
+            self.render_images()
 
             pf.debug("[inline] generate bitfield from", self.linkto)
             # pf.debug(elem)
