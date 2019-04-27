@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
+import os
 import panflute as pf
 from pantable import pantable
 import yaml
+import csv
 
 
 def get_tf(arg):
@@ -10,6 +12,10 @@ def get_tf(arg):
         return arg
     elif isinstance(arg, str):
         return True if arg.upper() in ["TRUE", "YES"] else False
+
+
+BEGIN = (0, 0)
+END = (-1, -1)
 
 
 class pantable_inline(object):
@@ -25,6 +31,8 @@ class pantable_inline(object):
                     #     "header": bool,
                     #     "markdown": bool,
                     #     "include": string,
+                    #     "subset_from": list[column(x), row(y)] x >= 1, y >= 1
+                    #     "subset_to": list[column(x), row(y)] x >= 1, y >= 1
                     # }
                     options = subelem.attributes
                     idn = subelem.identifier
@@ -32,10 +40,42 @@ class pantable_inline(object):
                     fn = subelem.url
 
                     if options.get("width") is not None:
-                        options["width"] = yaml.load(options.get("width"))
+                        options["width"] = yaml.load(options.get("width"), Loader=yaml.SafeLoader)
                     options["header"] = get_tf(options.get("header", True))
                     options["markdown"] = get_tf(options.get("markdown", False))
                     options["include"] = fn
+                    if options.get("subset_from") is not None:
+                        subset_from = tuple(yaml.load(options.get("subset_from"), Loader=yaml.SafeLoader))
+                        pf.debug(subset_from)
+                    else:
+                        subset_from = BEGIN
+                    if options.get("subset_to") is not None:
+                        subset_to = tuple(yaml.load(options.get("subset_to"), Loader=yaml.SafeLoader))
+                        pf.debug(subset_to)
+                    else:
+                        subset_to = END
+                    if subset_from != BEGIN or subset_to != END:
+                        basedir, _ = os.path.split(os.path.abspath(fn))
+                        subset = os.path.join(basedir, "_subset.csv")
+                        x1, y1 = subset_from
+                        x2, y2 = subset_to
+                        if y1 == 0:
+                            y1 = 1
+                            if y2 != -1:
+                                y2 -= 1
+                        if x1 == 0:
+                            x1 = 1
+                            if x2 != -1:
+                                x2 -= 1
+                        pf.debug(x1, y1, x2, y2)
+
+                        with open(fn, "r") as f:
+                            reader = list(csv.reader(f))
+                            with open(subset, "w") as wf:
+                                writer = csv.writer(wf)
+                                for item in reader[y1 - 1:y2]:
+                                    writer.writerow(item[x1 - 1:x2])
+                        options["include"] = subset
 
                     pf.debug("[inline] inline pantable of", fn)
 

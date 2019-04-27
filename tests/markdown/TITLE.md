@@ -115,6 +115,7 @@ lanes: 2
 ]
 ```
 
-[inline pantable sample](data/table.csv){.table #tbl:table markdown=True}
+[inline pantable sample](data/items.csv){.table #tbl:table markdown=True
+                                         subset_from=[1,1] subset_to=[5,5]}
 
 ref to [@tbl:table]
