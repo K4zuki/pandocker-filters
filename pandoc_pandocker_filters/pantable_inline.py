@@ -57,8 +57,8 @@ class pantable_inline(object):
                     if subset_from != BEGIN or subset_to != END:
                         basedir, _ = os.path.split(os.path.abspath(fn))
                         subset = os.path.join(basedir, "_subset.csv")
-                        x1, y1 = subset_from
-                        x2, y2 = subset_to
+                        y1, x1 = subset_from
+                        y2, x2 = subset_to
                         if y1 == 0:
                             y1 = 1
                             if y2 != -1:
