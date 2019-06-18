@@ -86,7 +86,7 @@ class ListingTable(object):
                 if isinstance(c, (pf.Str)):
                     c.text = c.text.replace("_", r"\textunderscore ")
                     # pf.debug(c.text)
-        basename = os.path.basename(filename)
+        basename = os.path.basename(filename)  # /path/to/file.txt -> file.txt
         file_type = options.get("type", "plain")
         types = [file_type, "numberLines"]
         startFrom = options.get("startFrom", "1")
