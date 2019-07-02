@@ -19,4 +19,10 @@ PROJECT= `pwd`
 # COREPROPFLAGS := --table "Normal Table=Centered"
 # COREPROPFLAGS += --paragraph "Normal=Body Text"
 ##
+
+PANFLAGS =
+PANFLAGS += $(MISC)/$(CONFIG)
+PANFLAGS += $(MDDIR)/$(CONFIG)
+PANFLAGS += --filter=pandocker-filters
+PANFLAGS += --filter=pandoc-crossref
 include $(MISC)/Makefile
