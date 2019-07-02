@@ -14,8 +14,18 @@ def get_tf(arg):
         return True if arg.upper() in ["TRUE", "YES"] else False
 
 
+def get_coord(xy):
+    if xy is not None:
+        # pf.debug(xy)
+        if xy == -1:
+            return None
+        else:
+            xy += 1
+            return xy
+
+
 BEGIN = (0, 0)
-END = (-1, -1)
+END = (None, None)
 
 
 class pantable_inline(object):
@@ -46,12 +56,12 @@ class pantable_inline(object):
                     options["include"] = fn
                     if options.get("subset_from") is not None:
                         subset_from = tuple(yaml.load(options.get("subset_from"), Loader=yaml.SafeLoader))
-                        pf.debug(subset_from)
+                        # pf.debug(subset_from)
                     else:
                         subset_from = BEGIN
                     if options.get("subset_to") is not None:
                         subset_to = tuple(yaml.load(options.get("subset_to"), Loader=yaml.SafeLoader))
-                        pf.debug(subset_to)
+                        # pf.debug(subset_to)
                     else:
                         subset_to = END
                     if subset_from != BEGIN or subset_to != END:
@@ -61,12 +71,11 @@ class pantable_inline(object):
                         y2, x2 = subset_to
                         if y1 == 0:
                             y1 = 1
-                            if y2 != -1:
-                                y2 -= 1
+                        y2 = get_coord(y2)
+
                         if x1 == 0:
                             x1 = 1
-                            if x2 != -1:
-                                x2 -= 1
+                        x2 = get_coord(x2)
                         pf.debug(x1, y1, x2, y2)
 
                         with open(fn, "r") as f:
