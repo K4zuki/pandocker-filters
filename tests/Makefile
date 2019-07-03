@@ -1,7 +1,8 @@
 ifeq ($(OS),Windows_NT)
 HOME = C:/Users/$(USERNAME)
 endif
-PANSTYLES= /usr/local/var
+PIPBASE= $(shell get-pip-base)
+PANSTYLES= $(PIPBASE)/var
 MISC= $(PANSTYLES)/pandoc_misc
 include $(MISC)/Makefile.in
 PROJECT= `pwd`

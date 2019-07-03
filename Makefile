@@ -16,9 +16,9 @@ init:
 	cd tests && make init
 
 install:
-	pip3 install .
+	pip3 install -U .
 
 uninstall:
-	pip3 uninstall pandoc-pandocker-filters
+	pip3 uninstall -y pandoc-pandocker-filters
 
 reinstall: uninstall install
