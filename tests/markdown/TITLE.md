@@ -58,7 +58,7 @@ pdf: True
 
 ref to [@fig:block-bitfield]
 
-[**inline bitfield sample**](data/bitfields/bit.yaml){.bitfield png=True pdf=True eps=True #fig:inline-bitfield}
+[**inline bitfield sample**](data/bitfields/bit.json){.bitfield png=True pdf=True eps=True #fig:inline-bitfield}
 
 ref to [@fig:inline-bitfield]
 
