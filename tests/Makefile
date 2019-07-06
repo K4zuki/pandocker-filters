@@ -32,7 +32,7 @@ PANFLAGS += $(MDDIR)/$(CONFIG)
 PANFLAGS += --filter=../pandoc_pandocker_filters/ListingTable.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/listingtable_inline.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/wavedrom_inline.py
-PANFLAGS += --filter=../pandoc_pandocker_filters/RotateImage.py
+#PANFLAGS += --filter=../pandoc_pandocker_filters/RotateImage.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/rotateimage_inline.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/AAFigure.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/aafigure_inline.py
