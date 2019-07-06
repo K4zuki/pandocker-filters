@@ -6,7 +6,7 @@ requires = ["panflute>=1.10.3",
             "svgutils>=0.2.0",
             "svglib",
             "aafigure",
-            "wavedrom==1.8.0",
+            "wavedrom",
             "pantable",
             ]
 
