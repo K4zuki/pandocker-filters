@@ -27,8 +27,8 @@ PANFLAGS =
 PANFLAGS += $(MISC_SYS)/$(CONFIG)
 PANFLAGS += $(MDDIR)/$(CONFIG)
 
-PANFLAGS += --filter=../pandoc_pandocker_filters/bitfield_inline.py
-PANFLAGS += --filter=../pandoc_pandocker_filters/BitField.py
+#PANFLAGS += --filter=../pandoc_pandocker_filters/bitfield_inline.py
+#PANFLAGS += --filter=../pandoc_pandocker_filters/BitField.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/ListingTable.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/listingtable_inline.py
 PANFLAGS += --filter=../pandoc_pandocker_filters/wavedrom_inline.py
