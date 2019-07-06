@@ -4,7 +4,9 @@ endif
 PIPBASE= $(shell get-pip-base)
 PANSTYLES= $(PIPBASE)/var
 MISC= $(PANSTYLES)/pandoc_misc
-include $(MISC)/Makefile.in
+MISC_SYS = $(MISC)/system
+MISC_USER = $(MISC)/user
+include $(MISC_SYS)/Makefile.in
 PROJECT= `pwd`
 
 ## userland: uncomment and replace
@@ -22,8 +24,8 @@ PROJECT= `pwd`
 ##
 
 PANFLAGS =
-PANFLAGS += $(MISC)/$(CONFIG)
+PANFLAGS += $(MISC_SYS)/$(CONFIG)
 PANFLAGS += $(MDDIR)/$(CONFIG)
 PANFLAGS += --filter=pandocker-filters
 PANFLAGS += --filter=pandoc-crossref
-include $(MISC)/Makefile
+include $(MISC_SYS)/Makefile
