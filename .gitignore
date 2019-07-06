@@ -110,4 +110,4 @@ tests/pd-images/
 tests/node_modules/
 tests/*.png
 tests/*.svg
-
+tests/data/_subset.csv
