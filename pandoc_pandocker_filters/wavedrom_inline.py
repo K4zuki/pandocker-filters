@@ -23,7 +23,7 @@ class wavedrom_inline(BitField):
         super().__init__()
 
     def action(self, elem, doc):
-        if isinstance(elem, pf.Link) and "wavedrom" in elem.classes:
+        if isinstance(elem, pf.Link) and (("wavedrom" in elem.classes) or ("bitfield" in elem.classes)):
             fn = elem.url
             options = elem.attributes
             idn = elem.identifier
@@ -44,7 +44,11 @@ class wavedrom_inline(BitField):
 
             pf.debug("[inline] generate wavedrom from", self.linkto)
             # pf.debug(elem)
-            elem.classes.remove("wavedrom")
+            try:
+                elem.classes.remove("wavedrom")
+            except:
+                elem.classes.remove("bitfield")
+
             elem = pf.Image(*caption, classes=elem.classes, url=self.linkto,
                             identifier=idn, title="fig:", attributes=elem.attributes)
             # pf.debug(elem)
