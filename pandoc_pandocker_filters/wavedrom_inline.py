@@ -14,7 +14,6 @@ import os
 import panflute as pf
 from pandoc_pandocker_filters.BitField import BitField
 import wavedrom
-import attrdict
 
 
 class wavedrom_inline(BitField):
@@ -65,8 +64,7 @@ class wavedrom_inline(BitField):
 
     def json2svg(self):
 
-        args = attrdict.AttrDict({"input": self.source, "svg": self.svg_filename})
-        wavedrom.main(args)
+        wavedrom.render_write(self.source, self.svg_filename)
 
 
 def main(doc=None):
