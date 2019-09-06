@@ -38,7 +38,10 @@ class wavedrom_inline(BitField):
             assert isinstance(self.convert_to_pdf, bool), "option pdf is boolean"
             assert isinstance(self.convert_to_eps, bool), "option eps is boolean"
 
-            self.json2svg()
+            output = wavedrom.render(data, self.svg_filename)
+            output.saveas(self.svg_filename)
+            # pf.debug(output.tostring())
+
             self.render_images()
 
             pf.debug("[inline] generate wavedrom from", self.linkto)
@@ -61,10 +64,6 @@ class wavedrom_inline(BitField):
             pf.debug("# Removing link for safety.")
             pf.debug("#")
             return []
-
-    def json2svg(self):
-
-        wavedrom.render_write(self.source, self.svg_filename)
 
 
 def main(doc=None):
