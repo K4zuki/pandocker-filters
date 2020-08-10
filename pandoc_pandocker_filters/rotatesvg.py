@@ -30,7 +30,7 @@ class rotatesvg(object):
         y = float(y.split("px")[0])
         newx = float(x) * abs(math.cos(rad)) + float(y) * abs(math.sin(rad))
         newy = float(x) * abs(math.sin(rad)) + float(y) * abs(math.cos(rad))
-        return (abs(newx), abs(newy))
+        return (abs(round(newx, 6)), abs(round(newy, 6)))
 
     def get_offset(self, width, height, angle):
         offset_x = 0
@@ -56,18 +56,19 @@ class rotatesvg(object):
         else:
             pass
         # debug(offset_x, offset_y)
-        return (offset_x, offset_y)
+        return (round(offset_x, 6), round(offset_y, 6))
 
     def rotate(self, filename, angle):
         svg = svgutils.transform.fromfile(filename)
-        originalSVG = svgutils.compose.SVG(filename)
-        originalSVG.rotate(angle)
-        offset_x, offset_y = self.get_offset(svg.width, svg.height, angle)
+        svg_root = svg.getroot()
+        svg_root.rotate(angle)
+        w, h = svg.get_size()
+        offset_x, offset_y = self.get_offset(w, h, angle)
         # debug("offset=", offset_x, offset_y)
-        originalSVG.move(offset_x, offset_y)
+        svg_root.moveto(offset_x, offset_y)
 
-        newx, newy = self.resize(svg.width, svg.height, angle)
-        figure = svgutils.compose.Figure(
-            newx, newy,
-            originalSVG)
+        newx, newy = self.resize(w, h, angle)
+        figure = svgutils.transform.SVGFigure(
+            newx, newy)
+        figure.append(svg_root)
         return figure
